@@ -4,7 +4,10 @@ import br.com.jaya.tech.domain.common.exception.DomainException
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.CsvSource
+import org.junit.jupiter.params.provider.CsvSources
 import org.junit.jupiter.params.provider.ValueSource
 import kotlin.test.assertNotNull
 import kotlin.test.assertTrue
@@ -30,7 +33,7 @@ class UserTest {
         assertNotNull(userCreated.id)
         assertNotNull(userCreated.id.value)
 
-        if(expectedId.isNotBlank()) assertNotNull(expectedId, userCreated.id.value)
+        if (expectedId.isNotBlank()) assertNotNull(expectedId, userCreated.id.value)
 
         assertEquals(expectedGivenName, userCreated.name.givenName)
         assertEquals(expectedFamilyName, userCreated.name.familyName)
@@ -104,6 +107,102 @@ class UserTest {
         }
 
         assertTrue(exception.message.equals(expectedErrorMessage01) || exception.message.equals(expectedErrorMessage02))
+
+    }
+
+    @Test
+    fun givenAValidEmail_whenCallUpdateEmail_shouldUpdateUserEmail() {
+
+        val expectedNewEmail = "test01@test.com"
+        val expectedUser = User.builder()
+            .givenName("John")
+            .familyName("Doe")
+            .email("test@test.com")
+            .build();
+
+        expectedUser.updateEmail(expectedNewEmail);
+
+        assertEquals(expectedNewEmail, expectedUser.email.value)
+
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = ["", "ac", "test@", "test@test"])
+    fun givenAnInvalidEmail_whenCallUpdateEmail_shouldThrowsAnException(invalidEmail: String) {
+
+        val expectedErrorMessage01 = "'email' should not be null or empty"
+        val expectedErrorMessage02 = "'email' is not a valid email format"
+
+        val expectedUser = User.builder()
+            .givenName("John")
+            .familyName("Doe")
+            .email("test@test.com")
+            .build();
+
+        val exception = assertThrows(DomainException::class.java) { expectedUser.updateEmail(invalidEmail) }
+
+        assertTrue(exception.message.equals(expectedErrorMessage01) || exception.message.equals(expectedErrorMessage02))
+
+    }
+
+    @ParameterizedTest
+    @CsvSource("Daenerys; Targaryen", delimiter = ';')
+    fun givenAValidName_whenCallUpdateName_shouldUpdateUserEmail(givenName: String, familyName: String) {
+
+        val expectedName = Name.of(givenName, familyName)
+
+        val expectedUser = User.builder()
+            .givenName("John")
+            .familyName("Snow")
+            .email("test@test.com")
+            .build();
+
+        expectedUser.updateName(givenName, familyName);
+
+        assertEquals(expectedName, expectedUser.name)
+
+    }
+
+    @ParameterizedTest
+    @CsvSource("''; Targaryen", "Daenerys;''", "'';''", delimiter = ';')
+    fun givenAnInvalidName_whenCallUpdateName_shouldThrowsAnException(invalidGivenName: String, invalidFamilyName: String) {
+
+        val expectedErrorMessage01 = "'givenName' should not be null or empty"
+        val expectedErrorMessage02 = "'givenName' invalid size, min size is 3"
+        val expectedErrorMessage03 = "'familyName' should not be null or empty"
+        val expectedErrorMessage04 = "'familyName' invalid size, min size is 3"
+
+        val expectedUser = User.builder()
+            .givenName("John")
+            .familyName("Doe")
+            .email("test@test.com")
+            .build();
+
+        val exception = assertThrows(DomainException::class.java) { expectedUser.updateName(invalidGivenName, invalidFamilyName) }
+
+        assertTrue(
+            exception.message.equals(expectedErrorMessage01) || exception.message.equals(expectedErrorMessage02) ||
+                    exception.message.equals(expectedErrorMessage03) || exception.message.equals(expectedErrorMessage04)
+        )
+
+    }
+
+    @Test
+    fun givenAValidUser_whenCallGetFormattedName_shouldReturnUserNameFormatted() {
+
+        val expectedFormattedName = "John Doe"
+
+        val expectedGivenName = "John"
+        val expectedFamilyName = "Doe"
+        val expectedEmail = "test@test.com"
+
+        val user = User.builder()
+            .givenName(expectedGivenName)
+            .familyName(expectedFamilyName)
+            .email(expectedEmail)
+            .build();
+
+        assertEquals(expectedFormattedName, user.getFormattedName())
 
     }
 
