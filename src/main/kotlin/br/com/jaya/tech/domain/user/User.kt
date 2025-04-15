@@ -7,6 +7,7 @@ data class UserId(val value: String) {
         fun create(): UserId {
             return UserId(IdUtils.generate())
         }
+
         fun create(id: String): UserId {
             return UserId(id)
         }
@@ -15,9 +16,27 @@ data class UserId(val value: String) {
 
 class User private constructor(
     val id: UserId,
-    val name: Name,
-    val email: Email
+    name: Name,
+    email: Email
 ) {
+
+    var name: Name = name
+        private set
+
+    var email: Email = email
+        private set
+
+    fun updateEmail(email: String) {
+        this.email = Email.of(email)
+    }
+
+    fun updateName(givenName: String, familyName: String) {
+        this.name = Name.of(givenName, familyName)
+    }
+
+    fun getFormattedName() : String {
+        return "${this.name.givenName} ${this.name.familyName}"
+    }
 
     companion object {
         fun builder(): Builder {
