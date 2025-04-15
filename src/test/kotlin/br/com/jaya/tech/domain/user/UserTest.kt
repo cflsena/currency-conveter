@@ -7,7 +7,6 @@ import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.CsvSource
-import org.junit.jupiter.params.provider.CsvSources
 import org.junit.jupiter.params.provider.ValueSource
 import kotlin.test.assertNotNull
 import kotlin.test.assertTrue
@@ -33,7 +32,7 @@ class UserTest {
         assertNotNull(userCreated.id)
         assertNotNull(userCreated.id.value)
 
-        if (expectedId.isNotBlank()) assertNotNull(expectedId, userCreated.id.value)
+        if (expectedId.isNotBlank()) assertEquals(expectedId, userCreated.id.value)
 
         assertEquals(expectedGivenName, userCreated.name.givenName)
         assertEquals(expectedFamilyName, userCreated.name.familyName)
