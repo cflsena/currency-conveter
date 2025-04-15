@@ -1,6 +1,8 @@
 package br.com.jaya.tech.domain.user
 
 import br.com.jaya.tech.domain.common.utils.IdUtils
+import br.com.jaya.tech.domain.user.vo.Email
+import br.com.jaya.tech.domain.user.vo.Name
 
 data class UserId(val value: String) {
     companion object {

@@ -1,4 +1,4 @@
-package br.com.jaya.tech.domain.user
+package br.com.jaya.tech.domain.user.vo
 
 import br.com.jaya.tech.domain.common.exception.DomainException
 

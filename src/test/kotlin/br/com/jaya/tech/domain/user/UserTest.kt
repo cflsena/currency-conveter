@@ -1,6 +1,7 @@
 package br.com.jaya.tech.domain.user
 
 import br.com.jaya.tech.domain.common.exception.DomainException
+import br.com.jaya.tech.domain.user.vo.Name
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.DisplayName
