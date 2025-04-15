@@ -1,12 +1,14 @@
 package br.com.jaya.tech.domain.transaction
 
+import br.com.jaya.tech.domain.common.Entity
+import br.com.jaya.tech.domain.common.Identifier
 import br.com.jaya.tech.domain.common.utils.IdUtils
 import br.com.jaya.tech.domain.transaction.vo.Money
 import java.math.BigDecimal
 import java.math.RoundingMode
 import java.time.LocalDateTime
 
-data class TransactionId(val value: String) {
+data class TransactionId(private val value: String) : Identifier<String> {
     companion object {
         fun create(): TransactionId {
             return TransactionId(IdUtils.generate())
@@ -16,16 +18,21 @@ data class TransactionId(val value: String) {
             return TransactionId(id)
         }
     }
+
+    override fun value(): String {
+        return this.value
+    }
+
 }
 
 class Transaction private constructor(
-    val id: TransactionId,
+    private val id: TransactionId,
     val userId: String,
     val originMoney: Money,
     val destinationMoney: Money,
     val conversionRate: BigDecimal,
     val createdAt: LocalDateTime
-) {
+) : Entity<TransactionId> {
 
     companion object {
         fun builder(): Builder {
@@ -85,6 +92,10 @@ class Transaction private constructor(
 
         }
 
+    }
+
+    override fun id(): TransactionId {
+        return this.id
     }
 
 }

@@ -28,12 +28,12 @@ class UserTest {
             .givenName(expectedGivenName)
             .familyName(expectedFamilyName)
             .email(expectedEmail)
-            .build();
+            .build()
 
-        assertNotNull(userCreated.id)
-        assertNotNull(userCreated.id.value)
+        assertNotNull(userCreated.id())
+        assertNotNull(userCreated.id().value())
 
-        if (expectedId.isNotBlank()) assertEquals(expectedId, userCreated.id.value)
+        if (expectedId.isNotBlank()) assertEquals(expectedId, userCreated.id().value())
 
         assertEquals(expectedGivenName, userCreated.name.givenName)
         assertEquals(expectedFamilyName, userCreated.name.familyName)
@@ -118,9 +118,9 @@ class UserTest {
             .givenName("John")
             .familyName("Doe")
             .email("test@test.com")
-            .build();
+            .build()
 
-        expectedUser.updateEmail(expectedNewEmail);
+        expectedUser.updateEmail(expectedNewEmail)
 
         assertEquals(expectedNewEmail, expectedUser.email.value)
 
@@ -137,7 +137,7 @@ class UserTest {
             .givenName("John")
             .familyName("Doe")
             .email("test@test.com")
-            .build();
+            .build()
 
         val exception = assertThrows(DomainException::class.java) { expectedUser.updateEmail(invalidEmail) }
 
@@ -155,9 +155,9 @@ class UserTest {
             .givenName("John")
             .familyName("Snow")
             .email("test@test.com")
-            .build();
+            .build()
 
-        expectedUser.updateName(givenName, familyName);
+        expectedUser.updateName(givenName, familyName)
 
         assertEquals(expectedName, expectedUser.name)
 
@@ -176,7 +176,7 @@ class UserTest {
             .givenName("John")
             .familyName("Doe")
             .email("test@test.com")
-            .build();
+            .build()
 
         val exception = assertThrows(DomainException::class.java) { expectedUser.updateName(invalidGivenName, invalidFamilyName) }
 
@@ -200,7 +200,7 @@ class UserTest {
             .givenName(expectedGivenName)
             .familyName(expectedFamilyName)
             .email(expectedEmail)
-            .build();
+            .build()
 
         assertEquals(expectedFormattedName, user.getFormattedName())
 

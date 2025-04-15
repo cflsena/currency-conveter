@@ -1,10 +1,13 @@
 package br.com.jaya.tech.domain.user
 
+import br.com.jaya.tech.domain.common.Entity
+import br.com.jaya.tech.domain.common.Identifier
 import br.com.jaya.tech.domain.common.utils.IdUtils
 import br.com.jaya.tech.domain.user.vo.Email
 import br.com.jaya.tech.domain.user.vo.Name
 
-data class UserId(val value: String) {
+data class UserId(private val value: String) : Identifier<String> {
+
     companion object {
         fun create(): UserId {
             return UserId(IdUtils.generate())
@@ -14,13 +17,14 @@ data class UserId(val value: String) {
             return UserId(id)
         }
     }
+
+    override fun value(): String {
+        return this.value
+    }
+
 }
 
-class User private constructor(
-    val id: UserId,
-    name: Name,
-    email: Email
-) {
+class User private constructor(private val id: UserId, name: Name, email: Email) : Entity<UserId> {
 
     var name: Name = name
         private set
@@ -36,7 +40,7 @@ class User private constructor(
         this.name = Name.of(givenName, familyName)
     }
 
-    fun getFormattedName() : String {
+    fun getFormattedName(): String {
         return "${this.name.givenName} ${this.name.familyName}"
     }
 
@@ -65,6 +69,10 @@ class User private constructor(
             return User(id, name, email)
         }
 
+    }
+
+    override fun id(): UserId {
+        return this.id
     }
 
 }

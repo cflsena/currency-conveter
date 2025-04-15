@@ -38,11 +38,11 @@ class TransactionTest {
             .conversionRate(expectedConversionRate)
             .build()
 
-        assertNotNull(transactionCreated.id)
-        assertNotNull(transactionCreated.id.value)
+        assertNotNull(transactionCreated.id())
+        assertNotNull(transactionCreated.id().value())
         assertNotNull(transactionCreated.createdAt)
 
-        if (expectedId.isNotBlank()) assertEquals(expectedId, transactionCreated.id.value)
+        if (expectedId.isNotBlank()) assertEquals(expectedId, transactionCreated.id().value())
 
         assertEquals(expectedUserId, transactionCreated.userId)
         assertEquals(expectedOriginAmount, transactionCreated.originMoney.amount)
