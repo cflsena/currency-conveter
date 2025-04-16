@@ -2,6 +2,7 @@ package br.com.jaya.tech.domain.user.vo
 
 import br.com.jaya.tech.domain.common.ValueObject
 import br.com.jaya.tech.domain.common.exception.DomainException
+import br.com.jaya.tech.shared.assert.AssertThrows
 
 data class Name(val givenName: String, val familyName: String) : ValueObject() {
     companion object {
@@ -14,18 +15,19 @@ data class Name(val givenName: String, val familyName: String) : ValueObject() {
         }
 
         private fun validate(givenName: String?, familyName: String?) {
-            if (givenName.isNullOrBlank()) {
-                throw DomainException.with("'givenName' should not be null or empty")
-            }
-            if (givenName.length < MIN_SIZE_NAME) {
-                throw DomainException.with("'givenName' invalid size, min size is $MIN_SIZE_NAME")
-            }
-            if (familyName.isNullOrBlank()) {
-                throw DomainException.with("'familyName' should not be null or empty")
-            }
-            if (familyName.length < MIN_SIZE_NAME) {
-                throw DomainException.with("'familyName' invalid size, min size is $MIN_SIZE_NAME")
-            }
+
+            AssertThrows.isTrue(!givenName.isNullOrBlank())
+            { DomainException.with("'givenName' should not be null or empty") }
+
+            AssertThrows.isTrue(givenName!!.length >= MIN_SIZE_NAME)
+            { DomainException.with("'givenName' invalid size, min size is $MIN_SIZE_NAME") }
+
+            AssertThrows.isTrue(!familyName.isNullOrBlank())
+            { DomainException.with("'familyName' should not be null or empty") }
+
+            AssertThrows.isTrue(familyName!!.length >= MIN_SIZE_NAME)
+            { DomainException.with("'familyName' invalid size, min size is $MIN_SIZE_NAME") }
+
         }
 
     }

@@ -2,6 +2,7 @@ package br.com.jaya.tech.domain.user.vo
 
 import br.com.jaya.tech.domain.common.ValueObject
 import br.com.jaya.tech.domain.common.exception.DomainException
+import br.com.jaya.tech.shared.assert.AssertThrows
 
 data class Email(val value: String) : ValueObject() {
     companion object {
@@ -14,12 +15,9 @@ data class Email(val value: String) : ValueObject() {
         }
 
         private fun validate(value: String?) {
-            if (value.isNullOrBlank()) {
-                throw DomainException.with("'email' should not be null or empty")
-            }
-            if (!EMAIL_REGEX.matches(value)) {
-                throw DomainException.with("'email' is not a valid email format")
-            }
+            AssertThrows.isTrue(!value.isNullOrBlank()) { DomainException.with("'email' should not be null or empty") }
+            AssertThrows.isTrue(EMAIL_REGEX.matches(value!!))
+            { DomainException.with("'email' is not a valid email format") }
         }
 
     }

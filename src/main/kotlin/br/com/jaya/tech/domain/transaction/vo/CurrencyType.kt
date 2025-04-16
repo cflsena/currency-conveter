@@ -23,7 +23,7 @@ enum class CurrencyType {
     companion object {
         fun findByName(name: String) : CurrencyType {
             return entries.firstOrNull { it.name.equals(name, ignoreCase = true) }
-                ?: throw DomainException.with("currency $name invalid, available values ${entries}")
+                ?: throw DomainException.with("currency $name invalid, available values $entries")
         }
     }
 

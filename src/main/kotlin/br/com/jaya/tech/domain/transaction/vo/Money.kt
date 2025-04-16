@@ -2,6 +2,7 @@ package br.com.jaya.tech.domain.transaction.vo
 
 import br.com.jaya.tech.domain.common.ValueObject
 import br.com.jaya.tech.domain.common.exception.DomainException
+import br.com.jaya.tech.shared.assert.AssertThrows
 import java.math.BigDecimal
 import java.math.RoundingMode
 import java.text.NumberFormat
@@ -13,14 +14,9 @@ data class Money(val amount: BigDecimal, val currency: CurrencyType) : ValueObje
         private const val NON_BREAKING_SPACE_CHAR = " "
 
         fun of(amount: BigDecimal, currency: String, scale: Int, roundingMode: RoundingMode): Money {
-            validate(amount)
+            AssertThrows.isTrue(amount > BigDecimal.ZERO)
+            { DomainException.with("'amount' should be greater than zero") }
             return Money(amount.setScale(scale, roundingMode), CurrencyType.findByName(currency))
-        }
-
-        private fun validate(amount: BigDecimal) {
-            if (amount <= BigDecimal.ZERO) {
-                throw DomainException.with("'amount' should be greater than zero")
-            }
         }
 
     }
