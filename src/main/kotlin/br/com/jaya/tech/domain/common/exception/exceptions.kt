@@ -18,3 +18,11 @@ class NotFoundException private constructor(error: Error) : BaseException(error)
         }
     }
 }
+
+class ResourceAlreadyCreatedException private constructor(error: Error) : BaseException(error) {
+    companion object {
+        fun with(message: String): ResourceAlreadyCreatedException {
+            return ResourceAlreadyCreatedException(Error.with(message))
+        }
+    }
+}

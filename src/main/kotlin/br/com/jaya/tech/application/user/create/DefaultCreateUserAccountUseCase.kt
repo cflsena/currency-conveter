@@ -1,0 +1,35 @@
+package br.com.jaya.tech.application.user.create
+
+import br.com.jaya.tech.domain.common.exception.ResourceAlreadyCreatedException
+import br.com.jaya.tech.domain.user.User
+import br.com.jaya.tech.domain.user.UserRepository
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
+
+class DefaultCreateUserAccountUseCase(
+    private val userRepository: UserRepository
+) : CreateUserAccountUseCase {
+
+    private val log: Logger = LoggerFactory.getLogger(DefaultCreateUserAccountUseCase::class.java);
+
+    override fun execute(input: CreateUserAccountInput): CreateUserAccountOutput {
+        log.info("Creating user with {}", input)
+        validate(input.email)
+        val userToCreate = User.builder()
+            .givenName(input.givenName)
+            .familyName(input.familyName)
+            .email(input.email)
+            .build()
+        val userCreated = userRepository.save(userToCreate)
+        log.info("User with {} created", userCreated)
+        return CreateUserAccountOutput(userCreated.id().value())
+    }
+
+    private fun validate(userEmail: String) {
+        if (userRepository.existsByEmail(userEmail)) {
+            log.error("User with e-mail {} already created", userEmail)
+            throw ResourceAlreadyCreatedException.with("Failed to process request. Please, try again later")
+        }
+    }
+
+}
