@@ -1,6 +1,6 @@
 package br.com.jaya.tech.domain.common.utils
 
-import java.util.UUID
+import java.util.*
 
 object IdUtils {
 
