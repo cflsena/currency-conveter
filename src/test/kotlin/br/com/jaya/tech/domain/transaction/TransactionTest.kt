@@ -3,17 +3,15 @@ package br.com.jaya.tech.domain.transaction
 import br.com.jaya.tech.domain.common.exception.DomainException
 import br.com.jaya.tech.domain.common.utils.IdUtils
 import br.com.jaya.tech.domain.transaction.vo.CurrencyType
-import org.junit.jupiter.api.Assertions
-import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Assertions.assertTrue
+import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.CsvSource
 import org.junit.jupiter.params.provider.NullAndEmptySource
 import org.junit.jupiter.params.provider.NullSource
 import org.junit.jupiter.params.provider.ValueSource
 import java.math.BigDecimal
-import kotlin.test.assertNotNull
 
 @DisplayName("Unit Test for Transaction Entity")
 class TransactionTest {
@@ -69,7 +67,7 @@ class TransactionTest {
             transactionCreated.userId(invalidUserId)
         }
 
-        val exception = Assertions.assertThrows(
+        val exception = assertThrows(
             DomainException::class.java,
         ) { transactionCreated.build() }
 
@@ -96,7 +94,7 @@ class TransactionTest {
             transactionCreated.conversionRate(invalidConversionRate)
         }
 
-        val exception = Assertions.assertThrows(
+        val exception = assertThrows(
             DomainException::class.java,
         ) { transactionCreated.build() }
 
@@ -122,7 +120,7 @@ class TransactionTest {
             transactionCreated.originAmount(invalidOriginAmount)
         }
 
-        val exception = Assertions.assertThrows(
+        val exception = assertThrows(
             DomainException::class.java,
         ) { transactionCreated.build() }
 
@@ -148,7 +146,7 @@ class TransactionTest {
             transactionCreated.originCurrency(invalidOriginCurrency)
         }
 
-        val exception = Assertions.assertThrows(
+        val exception = assertThrows(
             DomainException::class.java,
         ) { transactionCreated.build() }
 
@@ -172,7 +170,7 @@ class TransactionTest {
             transactionCreated.destinationCurrency(invalidDestinationCurrency)
         }
 
-        val exception = Assertions.assertThrows(
+        val exception = assertThrows(
             DomainException::class.java,
         ) { transactionCreated.build() }
 
@@ -208,6 +206,33 @@ class TransactionTest {
         assertEquals(originFormattedMoney, transactionCreated.originMoney.formattedAmount())
         assertEquals(destinationFormattedMoney, transactionCreated.destinationMoney.formattedAmount())
 
+    }
+
+    @Test
+    fun givenTwoTransactionIds_whenCallCreate_shouldHaveTwoUniqueAndNonEmptyIds() {
+        val transactionId01 = TransactionId.create()
+        val transactionId2 = TransactionId.create()
+        assertNotNull(transactionId01.value())
+        assertTrue(transactionId01.value().isNotBlank())
+        assertNotNull(transactionId2.value())
+        assertTrue(transactionId2.value().isNotBlank())
+        assertNotEquals(transactionId01, transactionId2)
+    }
+
+    @Test
+    fun givenTwoTransactionIdsWithTheSameValue_whenCompare_shouldBeEqual() {
+        val id = IdUtils.generate()
+        val transactionId01 = TransactionId.create(id)
+        val transactionId2 = TransactionId.create(id)
+        assertEquals(transactionId01, transactionId2)
+        assertEquals(transactionId01.hashCode(), transactionId2.hashCode())
+    }
+
+    @Test
+    fun givenTwoTransactionIdsWithDifferentValues_whenCompare_shouldNotBeEqual() {
+        val userId01 = TransactionId.create(IdUtils.generate())
+        val userIdd2 = TransactionId.create(IdUtils.generate())
+        assertNotEquals(userId01, userIdd2)
     }
 
 }

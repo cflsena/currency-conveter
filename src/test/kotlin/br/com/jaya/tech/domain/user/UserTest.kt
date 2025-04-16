@@ -1,9 +1,9 @@
 package br.com.jaya.tech.domain.user
 
 import br.com.jaya.tech.domain.common.exception.DomainException
+import br.com.jaya.tech.domain.common.utils.IdUtils
 import br.com.jaya.tech.domain.user.vo.Name
-import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Assertions.assertThrows
+import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
@@ -204,6 +204,33 @@ class UserTest {
 
         assertEquals(expectedFormattedName, user.getFormattedName())
 
+    }
+
+    @Test
+    fun givenTwoUserIds_whenCallCreate_shouldHaveTwoUniqueAndNonEmptyIds() {
+        val userId01 = UserId.create()
+        val userIdd2 = UserId.create()
+        assertNotNull(userId01.value())
+        assertTrue(userId01.value().isNotBlank())
+        assertNotNull(userIdd2.value())
+        assertTrue(userIdd2.value().isNotBlank())
+        assertNotEquals(userId01, userIdd2)
+    }
+
+    @Test
+    fun givenTwoUserIdsWithTheSameValue_whenCompare_shouldBeEqual() {
+        val id = IdUtils.generate()
+        val userId01 = UserId.create(id)
+        val userIdd2 = UserId.create(id)
+        assertEquals(userId01, userIdd2)
+        assertEquals(userId01.hashCode(), userIdd2.hashCode())
+    }
+
+    @Test
+    fun givenTwoUserIdsWithDifferentValues_whenCompare_shouldNotBeEqual() {
+        val userId01 = UserId.create(IdUtils.generate())
+        val userIdd2 = UserId.create(IdUtils.generate())
+        assertNotEquals(userId01, userIdd2)
     }
 
 }
