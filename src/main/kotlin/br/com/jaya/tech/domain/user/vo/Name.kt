@@ -1,8 +1,9 @@
 package br.com.jaya.tech.domain.user.vo
 
+import br.com.jaya.tech.domain.common.ValueObject
 import br.com.jaya.tech.domain.common.exception.DomainException
 
-data class Name(val givenName: String, val familyName: String) {
+data class Name(val givenName: String, val familyName: String) : ValueObject() {
     companion object {
 
         private const val MIN_SIZE_NAME = 3

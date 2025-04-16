@@ -1,8 +1,9 @@
 package br.com.jaya.tech.domain.user.vo
 
+import br.com.jaya.tech.domain.common.ValueObject
 import br.com.jaya.tech.domain.common.exception.DomainException
 
-data class Email(val value: String) {
+data class Email(val value: String) : ValueObject() {
     companion object {
 
         private val EMAIL_REGEX = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$".toRegex()

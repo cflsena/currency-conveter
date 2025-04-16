@@ -6,7 +6,7 @@ import java.util.*
 enum class CurrencyType {
 
     BRL {
-        override fun locale(): Locale = Locale.of("pt", "BR")
+        override fun locale(): Locale = Locale("pt", "BR")
     },
     USD {
         override fun locale(): Locale = Locale.US

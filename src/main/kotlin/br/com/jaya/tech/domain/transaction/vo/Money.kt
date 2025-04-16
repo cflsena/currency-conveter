@@ -1,11 +1,12 @@
 package br.com.jaya.tech.domain.transaction.vo
 
+import br.com.jaya.tech.domain.common.ValueObject
 import br.com.jaya.tech.domain.common.exception.DomainException
 import java.math.BigDecimal
 import java.math.RoundingMode
 import java.text.NumberFormat
 
-data class Money(val amount: BigDecimal, val currency: CurrencyType) {
+data class Money(val amount: BigDecimal, val currency: CurrencyType) : ValueObject() {
 
     companion object {
 
