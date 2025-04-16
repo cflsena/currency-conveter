@@ -75,4 +75,8 @@ class User private constructor(private val id: UserId, name: Name, email: Email)
         return this.id
     }
 
+    override fun toString(): String {
+        return "User(id=$id, name=$name, email=$email)"
+    }
+
 }
