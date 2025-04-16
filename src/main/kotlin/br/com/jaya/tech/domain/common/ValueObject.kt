@@ -1,4 +1,4 @@
 package br.com.jaya.tech.domain.common
 
-interface ValueObject {
+open class ValueObject {
 }
