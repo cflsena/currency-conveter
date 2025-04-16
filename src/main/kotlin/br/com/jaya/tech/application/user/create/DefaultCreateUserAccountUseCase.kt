@@ -6,11 +6,14 @@ import br.com.jaya.tech.domain.user.UserRepository
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
+data class CreateUserAccountInput(val givenName: String, val familyName: String, val email: String)
+data class CreateUserAccountOutput(val id: String)
+
 class DefaultCreateUserAccountUseCase(
     private val userRepository: UserRepository
 ) : CreateUserAccountUseCase {
 
-    private val log: Logger = LoggerFactory.getLogger(DefaultCreateUserAccountUseCase::class.java);
+    private val log: Logger = LoggerFactory.getLogger(DefaultCreateUserAccountUseCase::class.java)
 
     override fun execute(input: CreateUserAccountInput): CreateUserAccountOutput {
         log.info("Creating user with {}", input)
@@ -21,13 +24,13 @@ class DefaultCreateUserAccountUseCase(
             .email(input.email)
             .build()
         val userCreated = userRepository.save(userToCreate)
-        log.info("User with {} created", userCreated)
+        log.info("User with {} created successfully", userCreated)
         return CreateUserAccountOutput(userCreated.id().value())
     }
 
     private fun validate(userEmail: String) {
         if (userRepository.existsByEmail(userEmail)) {
-            log.error("User with e-mail {} already created", userEmail)
+            log.error("User cannot be created, e-mail {} already registered", userEmail)
             throw ResourceAlreadyCreatedException.with("Failed to process request. Please, try again later")
         }
     }

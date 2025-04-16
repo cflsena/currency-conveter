@@ -24,7 +24,7 @@ class CreateUserAccountUseCaseTest : UseCaseTest() {
     private lateinit var userRepository: UserRepository
 
     @Test
-    fun givenAValidCreateUserAccountInput_whenCallExecute_shouldCreateUserAccount() {
+    fun givenAValidInput_whenCallExecute_shouldCreateUserAccount() {
 
         val expectedGivenName = "John"
         val expectedFamilyName = "Doe"
@@ -52,7 +52,7 @@ class CreateUserAccountUseCaseTest : UseCaseTest() {
     }
 
     @Test
-    fun givenAnUserAlreadyCreated_whenCallExecute_shouldThrowsAnException() {
+    fun givenAnUserAlreadyRegistered_whenCallExecute_shouldThrowsAnException() {
 
         val expectedErrorMessage = "Failed to process request. Please, try again later"
 
