@@ -230,9 +230,9 @@ class TransactionTest {
 
     @Test
     fun givenTwoTransactionIdsWithDifferentValues_whenCompare_shouldNotBeEqual() {
-        val userId01 = TransactionId.create(IdUtils.generate())
-        val userIdd2 = TransactionId.create(IdUtils.generate())
-        assertNotEquals(userId01, userIdd2)
+        val transaction01 = TransactionId.create(IdUtils.generate())
+        val transaction02 = TransactionId.create(IdUtils.generate())
+        assertNotEquals(transaction01, transaction02)
     }
 
 }

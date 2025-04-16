@@ -78,7 +78,7 @@ class UpdateUserAccountUseCaseTest : UseCaseTest() {
         val expectedErrorMessage = "Failed to process request. Please, try again later"
         val expectedUser = User.builder().givenName("John").familyName("Snow").email("test@test.com").build()
 
-        val input = UpdateUserAccountInput(IdUtils.generate(), "Daenerys", "Targaryen", "test@test.com")
+        val input = UpdateUserAccountInput(IdUtils.generate(), "Daenerys", "Targaryen", "test2@test.com")
 
         assertNotEquals(expectedUser.id().value(), input.id)
 
