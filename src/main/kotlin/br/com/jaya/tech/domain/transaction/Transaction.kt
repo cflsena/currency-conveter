@@ -51,6 +51,7 @@ class Transaction private constructor(
         private var originCurrency: String? = null
         private var destinationCurrency: String? = null
         private var conversionRate: BigDecimal? = null
+        private var createdAt: LocalDateTime? = null
 
         fun id(id: String) = apply { this.id = id }
         fun userId(userId: String) = apply { this.userId = userId }
@@ -58,6 +59,7 @@ class Transaction private constructor(
         fun originCurrency(originCurrency: String) = apply { this.originCurrency = originCurrency }
         fun destinationCurrency(destinationCurrency: String) = apply { this.destinationCurrency = destinationCurrency }
         fun conversionRate(conversionRate: BigDecimal) = apply { this.conversionRate = conversionRate }
+        fun createdAt(createdAt: LocalDateTime) = apply { this.createdAt = createdAt }
 
         fun build(): Transaction {
 
@@ -72,7 +74,7 @@ class Transaction private constructor(
             val id = if (this.id == null) TransactionId.create() else TransactionId.create(this.id!!)
             val userId = this.userId!!
 
-            val createdAt = LocalDateTime.now()
+            val createdAt = this.createdAt ?: LocalDateTime.now()
 
             val originMoney = Money.of(
                 this.originAmount!!,

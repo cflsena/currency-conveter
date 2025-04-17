@@ -21,8 +21,6 @@ object TransactionValidator {
         { DomainException.with("'conversionRate' should be greater than zero") }
 
         AssertThrows.isNotNull(originAmount) { DomainException.with("'originAmount' should not be null") }
-        AssertThrows.isTrue(originAmount!! > BigDecimal.ZERO)
-        { DomainException.with("'originAmount' should not be null") }
 
         AssertThrows.isTrue(!originCurrency.isNullOrBlank())
         { DomainException.with("'originCurrency' should not be null or empty") }
