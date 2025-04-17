@@ -63,7 +63,7 @@ class User private constructor(private val id: UserId, name: Name, email: Email)
         fun email(email: String) = apply { this.email = email }
 
         fun build(): User {
-            val id = if (this.id == null) UserId.create() else UserId.create(this.id!!);
+            val id = if (this.id == null) UserId.create() else UserId.create(this.id!!)
             val name = Name.of(this.givenName, this.familyName)
             val email = Email.of(this.email)
             return User(id, name, email)
