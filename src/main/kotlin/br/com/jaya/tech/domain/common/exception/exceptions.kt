@@ -26,3 +26,11 @@ class ResourceAlreadyCreatedException private constructor(error: Error) : BaseEx
         }
     }
 }
+
+class BusinessException private constructor(error: Error) : BaseException(error) {
+    companion object {
+        fun with(message: String): BusinessException {
+            return BusinessException(Error.with(message))
+        }
+    }
+}

@@ -10,6 +10,12 @@ object AssertThrows {
         }
     }
 
+    fun isFalse(value: Boolean, exception: () -> BaseException) {
+        if (value) {
+            throw exception()
+        }
+    }
+
     fun isNotNull(value: Any?, exception: () -> BaseException) {
         if (value == null) {
             throw exception()
