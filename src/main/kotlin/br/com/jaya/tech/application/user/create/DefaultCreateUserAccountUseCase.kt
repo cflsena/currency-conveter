@@ -3,6 +3,7 @@ package br.com.jaya.tech.application.user.create
 import br.com.jaya.tech.domain.common.exception.ResourceAlreadyCreatedException
 import br.com.jaya.tech.domain.user.User
 import br.com.jaya.tech.domain.user.UserRepository
+import br.com.jaya.tech.shared.assert.AssertThrows
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
@@ -29,7 +30,7 @@ class DefaultCreateUserAccountUseCase(
     }
 
     private fun validate(userEmail: String) {
-        if (userRepository.existsByEmail(userEmail)) {
+        AssertThrows.isFalse(userRepository.existsByEmail(userEmail)) {
             log.error("User cannot be created, e-mail {} already registered", userEmail)
             throw ResourceAlreadyCreatedException.with("Failed to process request. Please, try again later")
         }
