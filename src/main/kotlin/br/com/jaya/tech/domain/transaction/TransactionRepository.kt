@@ -1,5 +1,8 @@
 package br.com.jaya.tech.domain.transaction
 
-fun interface TransactionRepository {
+import br.com.jaya.tech.domain.common.pagination.PageDTO
+
+interface TransactionRepository {
     fun save(transaction: Transaction) : Transaction
+    fun findAll(userId: String, pageNumber: Int, pageSize: Int): PageDTO<Transaction>
 }

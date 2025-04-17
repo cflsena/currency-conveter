@@ -103,5 +103,4 @@ class Transaction private constructor(
                 "conversionRate=$conversionRate, createdAt=$createdAt)"
     }
 
-
 }
