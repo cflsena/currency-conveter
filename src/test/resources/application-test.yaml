@@ -1,0 +1,37 @@
+spring:
+  main:
+    allow-bean-definition-overriding: true
+  config:
+    activate:
+      on-profile: test
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      schema: "JAYA_TECH"
+    jpa:
+      database-platform: org.hibernate.dialect.PostgreSQL14Dialect
+      properties:
+        ddl-auto: none
+        generate-ddl: false
+      hibernate:
+        ddl-auto: none
+        use-new-id-generator-mappings: false
+        database-platform: org.hibernate.dialect.PostgreSQL14Dialect
+        open-in-view: false
+        generate-ddl: false
+  liquibase:
+    contexts: test
+    enabled: true
+    change-log: classpath:db/changelog/master.xml
+    default_schema: "JAYA_TECH"
+  jpa:
+    show-sql: false
+    hibernate:
+      use-new-id-generator-mappings: false
+
+springdoc:
+  host: http://localhost:${wiremock.server.port}/
+
+exchange:
+  rates:
+    url: http://localhost:${wiremock.server.port}/v1/latest
