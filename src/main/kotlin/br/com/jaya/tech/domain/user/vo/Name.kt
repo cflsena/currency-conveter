@@ -1,6 +1,6 @@
 package br.com.jaya.tech.domain.user.vo
 
-import br.com.jaya.tech.domain.common.ValueObject
+import br.com.jaya.tech.domain.common.entity.ValueObject
 import br.com.jaya.tech.domain.common.exception.DomainException
 import br.com.jaya.tech.shared.assert.AssertThrows
 

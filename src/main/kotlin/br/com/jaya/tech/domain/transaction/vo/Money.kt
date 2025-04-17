@@ -1,6 +1,6 @@
 package br.com.jaya.tech.domain.transaction.vo
 
-import br.com.jaya.tech.domain.common.ValueObject
+import br.com.jaya.tech.domain.common.entity.ValueObject
 import br.com.jaya.tech.domain.common.exception.DomainException
 import br.com.jaya.tech.shared.assert.AssertThrows
 import java.math.BigDecimal

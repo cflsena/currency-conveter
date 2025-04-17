@@ -1,7 +1,7 @@
 package br.com.jaya.tech.domain.user
 
-import br.com.jaya.tech.domain.common.Entity
-import br.com.jaya.tech.domain.common.Identifier
+import br.com.jaya.tech.domain.common.entity.Entity
+import br.com.jaya.tech.domain.common.entity.Identifier
 import br.com.jaya.tech.domain.common.utils.IdUtils
 import br.com.jaya.tech.domain.user.vo.Email
 import br.com.jaya.tech.domain.user.vo.Name
