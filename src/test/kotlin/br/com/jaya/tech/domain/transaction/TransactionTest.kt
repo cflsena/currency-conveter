@@ -77,7 +77,7 @@ class TransactionTest {
 
     @ParameterizedTest
     @NullSource
-    @ValueSource(strings = ["0"])
+    @ValueSource(strings = ["0", "-1"])
     fun givenAnInvalidConversionRate_whenCallBuilder_shouldThrowsAnException(invalidConversionRate: BigDecimal?) {
 
         val expectedErrorMessage01 = "'conversionRate' should not be null"
