@@ -71,7 +71,7 @@ class Transaction private constructor(
 
             val id = if (this.id == null) TransactionId.create() else TransactionId.create(this.id!!)
             val userId = this.userId!!
-            val conversionRateWithScale = this.conversionRate!!
+
             val createdAt = LocalDateTime.now()
 
             val originMoney = Money.of(
@@ -82,13 +82,13 @@ class Transaction private constructor(
             )
 
             val destinationMoney = Money.of(
-                originMoney.amount.multiply(conversionRateWithScale),
+                originMoney.amount.multiply(this.conversionRate),
                 this.destinationCurrency!!,
                 DEFAULT_AMOUNT_SCALE_SIZE,
                 DEFAULT_ROUNDING_MODE
             )
 
-            return Transaction(id, userId, originMoney, destinationMoney, conversionRateWithScale, createdAt)
+            return Transaction(id, userId, originMoney, destinationMoney, this.conversionRate!!, createdAt)
 
         }
 
@@ -97,5 +97,11 @@ class Transaction private constructor(
     override fun id(): TransactionId {
         return this.id
     }
+
+    override fun toString(): String {
+        return "Transaction(id=$id, userId='$userId', originMoney=$originMoney, destinationMoney=$destinationMoney, " +
+                "conversionRate=$conversionRate, createdAt=$createdAt)"
+    }
+
 
 }
