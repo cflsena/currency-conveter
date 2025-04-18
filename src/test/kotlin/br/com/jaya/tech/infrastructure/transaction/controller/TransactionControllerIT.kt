@@ -4,6 +4,7 @@ import br.com.jaya.tech.domain.common.pagination.PageDTO
 import br.com.jaya.tech.infrastructure.common.e2e.E2ESupport
 import br.com.jaya.tech.infrastructure.common.e2e.JsonTestUtils.readJsonAsString
 import br.com.jaya.tech.infrastructure.common.e2e.MockCallUtils.mockCall
+import br.com.jaya.tech.infrastructure.transaction.api.CurrencyConversionResponse
 import br.com.jaya.tech.infrastructure.transaction.persistence.jpa.TransactionJpaRepository
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper

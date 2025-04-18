@@ -5,8 +5,9 @@ import br.com.jaya.tech.application.transaction.create.CreateCurrencyConversionO
 import br.com.jaya.tech.application.transaction.list.CurrencyConversionsOutput
 import br.com.jaya.tech.domain.common.pagination.PageDTO
 import br.com.jaya.tech.domain.transaction.Transaction
-import br.com.jaya.tech.infrastructure.transaction.controller.CreateCurrencyConversionRequest
-import br.com.jaya.tech.infrastructure.transaction.controller.CurrencyConversionResponse
+import br.com.jaya.tech.infrastructure.common.api.pagination.PageResponseDTO
+import br.com.jaya.tech.infrastructure.transaction.api.CreateCurrencyConversionRequest
+import br.com.jaya.tech.infrastructure.transaction.api.CurrencyConversionResponse
 import br.com.jaya.tech.infrastructure.transaction.persistence.TransactionEntity
 import org.springframework.data.domain.Page
 
@@ -71,8 +72,8 @@ object TransactionMapper {
         )
     }
 
-    fun toResponse(page: PageDTO<CurrencyConversionsOutput>): PageDTO<CurrencyConversionResponse> {
-        return PageDTO(
+    fun toResponse(page: PageDTO<CurrencyConversionsOutput>): PageResponseDTO<CurrencyConversionResponse> {
+        return PageResponseDTO(
             page.pageNumber,
             page.pageSize,
             page.numberOfElements,
