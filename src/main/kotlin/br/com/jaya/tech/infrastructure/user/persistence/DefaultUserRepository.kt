@@ -5,9 +5,11 @@ import br.com.jaya.tech.domain.user.UserRepository
 import br.com.jaya.tech.infrastructure.user.mapper.UserMapper
 import br.com.jaya.tech.infrastructure.user.persistence.jpa.UserJpaRepository
 import org.springframework.data.repository.findByIdOrNull
+import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
 
-open class DefaultUserRepository(
+@Component
+class DefaultUserRepository(
     private val repository: UserJpaRepository
 ) : UserRepository {
 

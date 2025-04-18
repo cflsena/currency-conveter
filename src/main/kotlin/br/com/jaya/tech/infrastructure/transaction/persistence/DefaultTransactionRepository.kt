@@ -6,8 +6,10 @@ import br.com.jaya.tech.domain.transaction.TransactionRepository
 import br.com.jaya.tech.infrastructure.transaction.mapper.TransactionMapper
 import br.com.jaya.tech.infrastructure.transaction.persistence.jpa.TransactionJpaRepository
 import org.springframework.data.domain.PageRequest
+import org.springframework.stereotype.Component
 
-open class DefaultTransactionRepository(
+@Component
+class DefaultTransactionRepository(
     private val repository: TransactionJpaRepository
 ) : TransactionRepository {
 
