@@ -14,8 +14,10 @@ data class CurrencyConversionsOutput(
     val userId: String,
     val originCurrency: String,
     val originAmount: BigDecimal,
+    val originAmountFormatted: String,
     val destinationCurrency: String,
     val destinationAmount: BigDecimal,
+    val destinationAmountFormatted: String,
     val conversionRate: BigDecimal,
     val createdAt: LocalDateTime
 ) {
@@ -25,8 +27,8 @@ data class CurrencyConversionsOutput(
                 page.pageNumber,
                 page.pageSize,
                 page.numberOfElements,
-                page.totalElements,
                 page.totalPages,
+                page.totalElements,
                 if(page.items.isNotEmpty()) page.items.map { from(it) } else listOf()
             )
         }
@@ -37,8 +39,10 @@ data class CurrencyConversionsOutput(
                 transaction.userId,
                 transaction.originMoney.currency.name,
                 transaction.originMoney.amount,
+                transaction.originMoney.formattedAmount(),
                 transaction.destinationMoney.currency.name,
                 transaction.destinationMoney.amount,
+                transaction.destinationMoney.formattedAmount(),
                 transaction.conversionRate,
                 transaction.createdAt,
             )
