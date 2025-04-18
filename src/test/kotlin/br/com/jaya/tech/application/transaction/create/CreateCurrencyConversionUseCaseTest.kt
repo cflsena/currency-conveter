@@ -19,8 +19,6 @@ import org.mockito.InjectMocks
 import org.mockito.Mock
 import org.mockito.kotlin.*
 import java.math.BigDecimal
-import java.time.LocalDateTime
-import kotlin.test.assertEquals
 
 @DisplayName("Unit Test for Create Currency Conversion Use Case Test")
 class CreateCurrencyConversionUseCaseTest : UseCaseTest() {
