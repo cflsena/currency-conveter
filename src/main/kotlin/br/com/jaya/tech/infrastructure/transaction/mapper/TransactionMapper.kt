@@ -1,7 +1,12 @@
 package br.com.jaya.tech.infrastructure.transaction.mapper
 
+import br.com.jaya.tech.application.transaction.create.CreateCurrencyConversionInput
+import br.com.jaya.tech.application.transaction.create.CreateCurrencyConversionOutput
+import br.com.jaya.tech.application.transaction.list.CurrencyConversionsOutput
 import br.com.jaya.tech.domain.common.pagination.PageDTO
 import br.com.jaya.tech.domain.transaction.Transaction
+import br.com.jaya.tech.infrastructure.transaction.controller.CreateCurrencyConversionRequest
+import br.com.jaya.tech.infrastructure.transaction.controller.CurrencyConversionResponse
 import br.com.jaya.tech.infrastructure.transaction.persistence.TransactionEntity
 import org.springframework.data.domain.Page
 
@@ -39,6 +44,56 @@ object TransactionMapper {
             page.totalPages,
             page.totalElements.toInt(),
             page.content.map { toDomain(it) }
+        )
+    }
+
+    fun toInput(request: CreateCurrencyConversionRequest): CreateCurrencyConversionInput {
+        return CreateCurrencyConversionInput(
+            request.userId,
+            request.originAmount,
+            request.originCurrency,
+            request.destinationCurrency
+        )
+    }
+
+    fun toResponse(output: CreateCurrencyConversionOutput): CurrencyConversionResponse {
+        return CurrencyConversionResponse(
+            output.id,
+            output.userId,
+            output.originCurrency,
+            output.originAmount,
+            output.originAmountFormatted,
+            output.destinationCurrency,
+            output.destinationAmount,
+            output.destinationAmountFormatted,
+            output.conversionRate,
+            output.createdAt
+        )
+    }
+
+    fun toResponse(page: PageDTO<CurrencyConversionsOutput>): PageDTO<CurrencyConversionResponse> {
+        return PageDTO(
+            page.pageNumber,
+            page.pageSize,
+            page.numberOfElements,
+            page.totalPages,
+            page.totalElements,
+            page.items.map { toResponse(it) }
+        )
+    }
+
+    private fun toResponse(output: CurrencyConversionsOutput): CurrencyConversionResponse {
+        return CurrencyConversionResponse(
+            output.id,
+            output.userId,
+            output.originCurrency,
+            output.originAmount,
+            output.originAmountFormatted,
+            output.destinationCurrency,
+            output.destinationAmount,
+            output.destinationAmountFormatted,
+            output.conversionRate,
+            output.createdAt
         )
     }
 

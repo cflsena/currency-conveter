@@ -6,7 +6,7 @@ CREATE TABLE JAYA_TECH.tb_transaction (
     origin_currency CHAR(3) NOT NULL,
     origin_amount DECIMAL(19,2) NOT NULL,
     destination_currency CHAR(3) NOT NULL,
-    conversion_rate DECIMAL(8,7) NOT NULL,
+    conversion_rate DECIMAL(11,7) NOT NULL,
     created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL,
     user_id VARCHAR(36) NOT NULL,
     CONSTRAINT pk_tb_transaction PRIMARY KEY (id)
