@@ -5,6 +5,8 @@ import br.com.jaya.tech.infrastructure.user.persistence.UserEntity
 import jakarta.persistence.*
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.NotNull
+import org.hibernate.annotations.JdbcTypeCode
+import org.hibernate.type.SqlTypes
 import java.math.BigDecimal
 import java.time.LocalDateTime
 
@@ -20,6 +22,7 @@ class TransactionEntity(
 
     @field:NotNull
     @Enumerated(EnumType.STRING)
+    @JdbcTypeCode(SqlTypes.CHAR)
     @Column(name = "origin_currency", nullable = false, updatable = false)
     val originCurrency: CurrencyType,
 
@@ -29,6 +32,7 @@ class TransactionEntity(
 
     @field:NotNull
     @Enumerated(EnumType.STRING)
+    @JdbcTypeCode(SqlTypes.CHAR)
     @Column(name = "destination_currency", nullable = false, updatable = false)
     val destinationCurrency: CurrencyType,
 
