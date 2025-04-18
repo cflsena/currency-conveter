@@ -56,6 +56,7 @@ class UserRepositoryIT : DatabaseSupportIT() {
         assertNull(userRepository.findById(expectedUserId))
     }
 
+    @Sql("classpath:/sql/clear-db.sql")
     @ParameterizedTest(name = "{0} returns {1}")
     @CsvSource(
         "existsById, true, 85fc5f36-fe55-4d77-816d-8f6edfd395d5, test@test.com",
