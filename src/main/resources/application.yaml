@@ -1,3 +1,33 @@
+server:
+  port: 8080
+
 spring:
+  main:
+    lazy-initialization: true
+  config:
+    activate:
+      on-profile: default
   application:
     name: currency-converter
+  datasource:
+    driver-class-name: org.postgresql.Driver
+  liquibase:
+    contexts: local
+    enabled: true
+    change-log: classpath:db/changelog/master.xml
+    default_schema: "CURRENCY_CONVERSION"
+  jpa:
+    hibernate:
+      use-new-id-generator-mappings: false
+      ddl-auto: validate
+    open-in-view: false
+
+feign:
+  client:
+    config:
+      default:
+        loggerLevel: full
+
+logging:
+  level:
+    root: INFO
