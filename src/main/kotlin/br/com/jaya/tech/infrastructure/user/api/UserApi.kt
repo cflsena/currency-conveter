@@ -17,7 +17,6 @@ fun interface UserApi : ApiBaseDocumentation {
     @ApiResponse(responseCode = "201", description = "Created successfully")
     @Operation(summary = "Endpoint to create user account")
     @PostMapping(
-        "/accounts",
         consumes = [MediaType.APPLICATION_JSON_VALUE],
         produces = [MediaType.APPLICATION_JSON_VALUE]
     )
