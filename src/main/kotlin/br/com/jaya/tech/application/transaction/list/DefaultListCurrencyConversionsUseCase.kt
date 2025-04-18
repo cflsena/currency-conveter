@@ -3,6 +3,7 @@ package br.com.jaya.tech.application.transaction.list
 import br.com.jaya.tech.domain.common.pagination.PageDTO
 import br.com.jaya.tech.domain.transaction.Transaction
 import br.com.jaya.tech.domain.transaction.TransactionRepository
+import jakarta.inject.Named
 import java.math.BigDecimal
 import java.time.LocalDateTime
 
@@ -46,9 +47,8 @@ data class CurrencyConversionsOutput(
     }
 }
 
-class DefaultListCurrencyConversionsUseCase(
-    private val transactionRepository: TransactionRepository
-) : ListCurrencyConversionsUseCase {
+@Named
+class DefaultListCurrencyConversionsUseCase(private val transactionRepository: TransactionRepository) : ListCurrencyConversionsUseCase {
 
     override fun execute(input: CurrencyConversionsFilterInput): PageDTO<CurrencyConversionsOutput> {
         val transactionPage = transactionRepository.findAll(input.userId, input.pageNumber, input.pageSize)

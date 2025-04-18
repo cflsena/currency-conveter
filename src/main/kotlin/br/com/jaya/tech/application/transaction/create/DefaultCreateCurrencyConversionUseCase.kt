@@ -9,6 +9,7 @@ import br.com.jaya.tech.domain.transaction.TransactionRepository
 import br.com.jaya.tech.domain.transaction.vo.CurrencyType
 import br.com.jaya.tech.domain.user.UserRepository
 import br.com.jaya.tech.shared.assert.AssertThrows
+import jakarta.inject.Named
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import java.math.BigDecimal
@@ -47,6 +48,7 @@ data class CreateCurrencyConversionOutput(
     }
 }
 
+@Named
 class DefaultCreateCurrencyConversionUseCase(
     private val transactionRepository: TransactionRepository,
     private val userRepository: UserRepository,

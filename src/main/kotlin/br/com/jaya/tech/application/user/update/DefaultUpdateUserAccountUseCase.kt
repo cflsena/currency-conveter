@@ -4,14 +4,14 @@ import br.com.jaya.tech.domain.common.exception.NotFoundException
 import br.com.jaya.tech.domain.common.exception.ResourceAlreadyCreatedException
 import br.com.jaya.tech.domain.user.User
 import br.com.jaya.tech.domain.user.UserRepository
+import jakarta.inject.Named
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
 data class UpdateUserAccountInput(val id: String, val givenName: String, val familyName: String, val email: String?)
 
-class DefaultUpdateUserAccountUseCase(
-    private val userRepository: UserRepository
-) : UpdateUserAccountUseCase {
+@Named
+class DefaultUpdateUserAccountUseCase(private val userRepository: UserRepository) : UpdateUserAccountUseCase {
 
     private val log: Logger = LoggerFactory.getLogger(DefaultUpdateUserAccountUseCase::class.java)
 

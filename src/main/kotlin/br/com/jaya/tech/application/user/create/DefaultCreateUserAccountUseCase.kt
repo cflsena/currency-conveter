@@ -4,15 +4,16 @@ import br.com.jaya.tech.domain.common.exception.ResourceAlreadyCreatedException
 import br.com.jaya.tech.domain.user.User
 import br.com.jaya.tech.domain.user.UserRepository
 import br.com.jaya.tech.shared.assert.AssertThrows
+import jakarta.inject.Named
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
 data class CreateUserAccountInput(val givenName: String, val familyName: String, val email: String)
+
 data class CreateUserAccountOutput(val id: String)
 
-class DefaultCreateUserAccountUseCase(
-    private val userRepository: UserRepository
-) : CreateUserAccountUseCase {
+@Named
+class DefaultCreateUserAccountUseCase(private val userRepository: UserRepository) : CreateUserAccountUseCase {
 
     private val log: Logger = LoggerFactory.getLogger(DefaultCreateUserAccountUseCase::class.java)
 
