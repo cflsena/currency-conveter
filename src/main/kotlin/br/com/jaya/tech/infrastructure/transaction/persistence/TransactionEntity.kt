@@ -13,30 +13,30 @@ import java.time.LocalDateTime
 class TransactionEntity(
 
     @Id
-    @NotNull
-    @NotBlank
+    @field:NotNull
+    @field:NotBlank
     @Column(name = "id", length = 36, nullable = false, updatable = false)
     val id: String,
 
-    @NotNull
+    @field:NotNull
     @Enumerated(EnumType.STRING)
     @Column(name = "origin_currency", nullable = false, updatable = false)
     val originCurrency: CurrencyType,
 
-    @NotNull
+    @field:NotNull
     @Column(name = "origin_amount", nullable = false, updatable = false)
     val originAmount: BigDecimal,
 
-    @NotNull
+    @field:NotNull
     @Enumerated(EnumType.STRING)
     @Column(name = "destination_currency", nullable = false, updatable = false)
     val destinationCurrency: CurrencyType,
 
-    @NotNull
+    @field:NotNull
     @Column(name = "conversion_rate", nullable = false, updatable = false)
     val conversionRate: BigDecimal,
 
-    @NotNull
+    @field:NotNull
     @Column(name = "created_at", nullable = false, updatable = false)
     val createdAt: LocalDateTime,
 

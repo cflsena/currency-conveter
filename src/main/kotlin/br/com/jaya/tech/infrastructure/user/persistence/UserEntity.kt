@@ -12,23 +12,23 @@ import jakarta.validation.constraints.NotNull
 class UserEntity(
 
     @Id
-    @NotNull
-    @NotBlank
+    @field:NotNull
+    @field:NotBlank
     @Column(name = "id", length = 36, nullable = false)
     val id: String,
 
-    @NotNull
-    @NotBlank
+    @field:NotNull
+    @field:NotBlank
     @Column(name = "given_name", nullable = false)
     val givenName: String,
 
-    @NotNull
-    @NotBlank
+    @field:NotNull
+    @field:NotBlank
     @Column(name = "family_name", nullable = false)
     val familyName: String,
 
-    @NotNull
-    @NotBlank
+    @field:NotNull
+    @field:NotBlank
     @Column(name = "email", nullable = false, unique = true)
     val email: String,
 
