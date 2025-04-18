@@ -1,7 +1,7 @@
 --liquibase formatted sql
 --changeset cleiton.sena:V20250417_111643-create_tb_transaction labels 1.0.0
 
-CREATE TABLE JAYA_TECH.tb_transaction (
+CREATE TABLE CURRENCY_CONVERSION.tb_transaction (
     id VARCHAR(36) NOT NULL,
     origin_currency CHAR(3) NOT NULL,
     origin_amount DECIMAL(19,2) NOT NULL,
@@ -12,8 +12,8 @@ CREATE TABLE JAYA_TECH.tb_transaction (
     CONSTRAINT pk_tb_transaction PRIMARY KEY (id)
 );
 
-ALTER TABLE JAYA_TECH.tb_transaction
+ALTER TABLE CURRENCY_CONVERSION.tb_transaction
 ADD CONSTRAINT FK_TB_TRANSACTION_ON_USER
-FOREIGN KEY (user_id) REFERENCES JAYA_TECH.tb_user (id);
+FOREIGN KEY (user_id) REFERENCES CURRENCY_CONVERSION.tb_user (id);
 
---rollback DROP TABLE JAYA_TECH.tb_transaction;
+--rollback DROP TABLE CURRENCY_CONVERSION.tb_transaction;

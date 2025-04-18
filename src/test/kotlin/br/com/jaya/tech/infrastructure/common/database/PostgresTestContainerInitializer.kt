@@ -12,7 +12,7 @@ class PostgresTestContainerInitializer : ApplicationContextInitializer<Configura
         @Container
         val postgresContainer = PostgreSQLContainer<Nothing>("postgres:14-alpine").apply {
             withInitScript("sql/init-db.sql")
-            withUrlParam("currentSchema", "JAYA_TECH")
+            withUrlParam("currentSchema", "CURRENCY_CONVERSION")
         }
     }
 
