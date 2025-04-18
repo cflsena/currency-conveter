@@ -46,7 +46,7 @@ class UserTest {
     fun givenAnInvalidGivenName_whenCallBuilder_shouldThrowsAnException(invalidGivenName: String) {
 
         val expectedErrorMessage01 = "'givenName' should not be null or empty"
-        val expectedErrorMessage02 = "'givenName' invalid size, min size is 3"
+        val expectedErrorMessage02 = "'givenName' invalid size, should be between 3 and 50"
         val expectedFamilyName = "Doe"
         val expectedEmail = "test@test.com"
 
@@ -69,7 +69,7 @@ class UserTest {
     fun givenAnInvalidFamilyName_whenCallBuilder_shouldThrowsAnException(invalidFamilyName: String) {
 
         val expectedErrorMessage01 = "'familyName' should not be null or empty"
-        val expectedErrorMessage02 = "'familyName' invalid size, min size is 3"
+        val expectedErrorMessage02 = "'familyName' invalid size, should be between 3 and 50"
         val expectedGivenName = "Doe"
         val expectedEmail = "test@test.com"
 
@@ -107,6 +107,27 @@ class UserTest {
         }
 
         assertTrue(exception.message.equals(expectedErrorMessage01) || exception.message.equals(expectedErrorMessage02))
+
+    }
+
+    @Test
+    fun givenAnInvalidEmail_whenCallBuilder_shouldThrowsAnException() {
+
+        val expectedErrorMessage = "'email' invalid size, max size is 50"
+        val expectedGivenName = "John"
+        val expectedFamilyName = "Doe"
+
+        val exception = assertThrows(
+            DomainException::class.java,
+        ) {
+            User.builder()
+                .givenName(expectedGivenName)
+                .familyName(expectedFamilyName)
+                .email("invalid_email_test_test_0001@invalid_email_test.com")
+                .build()
+        }
+
+        assertEquals(expectedErrorMessage, exception.message)
 
     }
 
