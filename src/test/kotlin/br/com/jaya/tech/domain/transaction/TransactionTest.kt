@@ -22,8 +22,8 @@ class TransactionTest {
 
         val expectedUserId = IdUtils.generate()
         val expectedOriginAmount = BigDecimal("100.00")
-        val expectedOriginCurrency = CurrencyType.BRL.name
-        val expectedDestinationCurrency = CurrencyType.USD.name
+        val expectedOriginCurrency = CurrencyType.BRL
+        val expectedDestinationCurrency = CurrencyType.USD
         val expectedDestinationAmount = BigDecimal("17.12")
         val expectedConversionRate = BigDecimal("0.1711596")
 
@@ -44,8 +44,8 @@ class TransactionTest {
 
         assertEquals(expectedUserId, transactionCreated.userId)
         assertEquals(expectedOriginAmount, transactionCreated.originMoney.amount)
-        assertEquals(expectedOriginCurrency, transactionCreated.originMoney.currency.name)
-        assertEquals(expectedDestinationCurrency, transactionCreated.destinationMoney.currency.name)
+        assertEquals(expectedOriginCurrency, transactionCreated.originMoney.currency)
+        assertEquals(expectedDestinationCurrency, transactionCreated.destinationMoney.currency)
         assertEquals(expectedDestinationAmount, transactionCreated.destinationMoney.amount)
         assertEquals(expectedConversionRate, transactionCreated.conversionRate)
 
@@ -59,8 +59,8 @@ class TransactionTest {
 
         val transactionCreated = Transaction.builder()
             .originAmount(BigDecimal("100.00"))
-            .originCurrency(CurrencyType.BRL.name)
-            .destinationCurrency(CurrencyType.USD.name)
+            .originCurrency(CurrencyType.BRL)
+            .destinationCurrency(CurrencyType.USD)
             .conversionRate(BigDecimal("0.1711596"))
 
         if (invalidUserId != null) {
@@ -87,8 +87,8 @@ class TransactionTest {
         val transactionCreated = Transaction.builder()
             .userId(IdUtils.generate())
             .originAmount(BigDecimal("100.00"))
-            .originCurrency(CurrencyType.BRL.name)
-            .destinationCurrency(CurrencyType.USD.name)
+            .originCurrency(CurrencyType.BRL)
+            .destinationCurrency(CurrencyType.USD)
 
         if (invalidConversionRate != null) {
             transactionCreated.conversionRate(invalidConversionRate)
@@ -112,8 +112,8 @@ class TransactionTest {
 
         val transactionCreated = Transaction.builder()
             .userId(IdUtils.generate())
-            .originCurrency(CurrencyType.BRL.name)
-            .destinationCurrency(CurrencyType.USD.name)
+            .originCurrency(CurrencyType.BRL)
+            .destinationCurrency(CurrencyType.USD)
             .conversionRate(BigDecimal("0.1711596"))
 
         if(invalidOriginAmount != null) {
@@ -129,7 +129,7 @@ class TransactionTest {
     }
 
     @ParameterizedTest
-    @NullAndEmptySource
+    @NullSource
     @ValueSource(strings = ["ABCD"])
     fun givenAnInvalidOriginCurrency_whenCallBuilder_shouldThrowsAnException(invalidOriginCurrency: String?) {
 
@@ -139,12 +139,8 @@ class TransactionTest {
         val transactionCreated = Transaction.builder()
             .userId(IdUtils.generate())
             .originAmount(BigDecimal("100.00"))
-            .destinationCurrency(CurrencyType.USD.name)
+            .destinationCurrency(CurrencyType.USD)
             .conversionRate(BigDecimal("0.1711596"))
-
-        if (invalidOriginCurrency != null) {
-            transactionCreated.originCurrency(invalidOriginCurrency)
-        }
 
         val exception = assertThrows(
             DomainException::class.java,
@@ -154,21 +150,16 @@ class TransactionTest {
 
     }
 
-    @ParameterizedTest
-    @NullAndEmptySource
-    fun givenAnInvalidDestinationCurrency_whenCallBuilder_shouldThrowsAnException(invalidDestinationCurrency: String?) {
+    @Test
+    fun givenAnInvalidDestinationCurrency_whenCallBuilder_shouldThrowsAnException() {
 
         val expectedErrorMessage = "'destinationCurrency' should not be null or empty"
 
         val transactionCreated = Transaction.builder()
             .userId(IdUtils.generate())
             .originAmount(BigDecimal("100.00"))
-            .originCurrency(CurrencyType.BRL.name)
+            .originCurrency(CurrencyType.BRL)
             .conversionRate(BigDecimal("0.1711596"))
-
-        if (invalidDestinationCurrency != null) {
-            transactionCreated.destinationCurrency(invalidDestinationCurrency)
-        }
 
         val exception = assertThrows(
             DomainException::class.java,
@@ -198,8 +189,8 @@ class TransactionTest {
         val transactionCreated = Transaction.builder()
             .userId(IdUtils.generate())
             .originAmount(BigDecimal("10000"))
-            .originCurrency(originCurrency.name)
-            .destinationCurrency(destinationCurrency.name)
+            .originCurrency(originCurrency)
+            .destinationCurrency(destinationCurrency)
             .conversionRate(BigDecimal("0.1711596"))
             .build()
 

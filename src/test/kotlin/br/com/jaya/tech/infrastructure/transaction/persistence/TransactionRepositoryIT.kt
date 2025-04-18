@@ -39,9 +39,9 @@ class TransactionRepositoryIT : DatabaseSupportIT() {
         val transactionToSave = Transaction.builder()
             .id(IdUtils.generate())
             .userId(registeredUserId)
-            .originCurrency(CurrencyType.BRL.name)
+            .originCurrency(CurrencyType.BRL)
             .originAmount(BigDecimal("100"))
-            .destinationCurrency(CurrencyType.USD.name)
+            .destinationCurrency(CurrencyType.USD)
             .conversionRate(BigDecimal("0.1702273"))
             .build()
 

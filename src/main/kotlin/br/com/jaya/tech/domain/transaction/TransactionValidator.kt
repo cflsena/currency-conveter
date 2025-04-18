@@ -1,6 +1,7 @@
 package br.com.jaya.tech.domain.transaction
 
 import br.com.jaya.tech.domain.common.exception.DomainException
+import br.com.jaya.tech.domain.transaction.vo.CurrencyType
 import br.com.jaya.tech.shared.assert.AssertThrows
 import java.math.BigDecimal
 
@@ -10,8 +11,8 @@ object TransactionValidator {
         userId: String?,
         conversionRate: BigDecimal?,
         originAmount: BigDecimal?,
-        originCurrency: String?,
-        destinationCurrency: String?
+        originCurrency: CurrencyType?,
+        destinationCurrency: CurrencyType?
     ) {
 
         AssertThrows.isTrue(!userId.isNullOrBlank()) { DomainException.with("'userId' should not be null or empty") }
@@ -22,10 +23,10 @@ object TransactionValidator {
 
         AssertThrows.isNotNull(originAmount) { DomainException.with("'originAmount' should not be null") }
 
-        AssertThrows.isTrue(!originCurrency.isNullOrBlank())
+        AssertThrows.isNotNull(originCurrency)
         { DomainException.with("'originCurrency' should not be null or empty") }
 
-        AssertThrows.isTrue(!destinationCurrency.isNullOrBlank())
+        AssertThrows.isNotNull(destinationCurrency)
         { DomainException.with("'destinationCurrency' should not be null or empty") }
 
     }

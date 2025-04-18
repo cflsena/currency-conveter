@@ -3,6 +3,7 @@ package br.com.jaya.tech.domain.transaction
 import br.com.jaya.tech.domain.common.entity.Entity
 import br.com.jaya.tech.domain.common.entity.Identifier
 import br.com.jaya.tech.domain.common.utils.IdUtils
+import br.com.jaya.tech.domain.transaction.vo.CurrencyType
 import br.com.jaya.tech.domain.transaction.vo.Money
 import java.math.BigDecimal
 import java.math.RoundingMode
@@ -48,16 +49,16 @@ class Transaction private constructor(
         private var id: String? = null
         private var userId: String? = null
         private var originAmount: BigDecimal? = null
-        private var originCurrency: String? = null
-        private var destinationCurrency: String? = null
+        private var originCurrency: CurrencyType? = null
+        private var destinationCurrency: CurrencyType? = null
         private var conversionRate: BigDecimal? = null
         private var createdAt: LocalDateTime? = null
 
         fun id(id: String) = apply { this.id = id }
         fun userId(userId: String) = apply { this.userId = userId }
         fun originAmount(originAmount: BigDecimal) = apply { this.originAmount = originAmount }
-        fun originCurrency(originCurrency: String) = apply { this.originCurrency = originCurrency }
-        fun destinationCurrency(destinationCurrency: String) = apply { this.destinationCurrency = destinationCurrency }
+        fun originCurrency(originCurrency: CurrencyType) = apply { this.originCurrency = originCurrency }
+        fun destinationCurrency(destinationCurrency: CurrencyType) = apply { this.destinationCurrency = destinationCurrency }
         fun conversionRate(conversionRate: BigDecimal) = apply { this.conversionRate = conversionRate }
         fun createdAt(createdAt: LocalDateTime) = apply { this.createdAt = createdAt }
 

@@ -28,8 +28,8 @@ class ListCurrencyConversionsUseCaseTest : UseCaseTest() {
 
         val expectedUserId = IdUtils.generate()
         val expectedOriginAmount = BigDecimal("100.00")
-        val expectedOriginCurrency = CurrencyType.BRL.name
-        val expectedDestinationCurrency = CurrencyType.USD.name
+        val expectedOriginCurrency = CurrencyType.BRL
+        val expectedDestinationCurrency = CurrencyType.USD
         val expectedConversionRate = BigDecimal("0.1702273")
         val expectedDestinationAmount = BigDecimal("17.02")
 
@@ -57,7 +57,7 @@ class ListCurrencyConversionsUseCaseTest : UseCaseTest() {
             listOf(expectedTransaction)
         )
 
-        val expectedOutput = CurrencyConversionsOutput.from(expectedTransaction);
+        val expectedOutput = CurrencyConversionsOutput.from(expectedTransaction)
 
         val input = CurrencyConversionsFilterInput(expectedUserId, expectedPageNumber, expectedPageSize)
 

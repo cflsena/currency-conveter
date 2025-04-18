@@ -72,13 +72,15 @@ class DefaultCreateCurrencyConversionUseCase(
             throw NotFoundException.with("Unable to perform conversion, user with id ${input.userId} not found")
         }
 
-        val conversionRate = retrieveConversionRate(input)
+        val originCurrency = CurrencyType.findByName(input.originCurrency)
+        val destinationCurrency = CurrencyType.findByName(input.destinationCurrency)
+        val conversionRate = retrieveConversionRate(originCurrency, destinationCurrency)
 
         val transactionToSave = Transaction.builder()
             .userId(input.userId)
             .originAmount(input.originAmount)
-            .originCurrency(input.originCurrency)
-            .destinationCurrency(input.destinationCurrency)
+            .originCurrency(originCurrency)
+            .destinationCurrency(destinationCurrency)
             .conversionRate(conversionRate)
             .build()
 
@@ -90,17 +92,15 @@ class DefaultCreateCurrencyConversionUseCase(
 
     }
 
-    private fun retrieveConversionRate(input: CreateCurrencyConversionInput): BigDecimal {
+    private fun retrieveConversionRate(originCurrency: CurrencyType, destinationCurrency: CurrencyType): BigDecimal {
 
-        AssertThrows.isFalse(input.originCurrency == input.destinationCurrency) {
+        AssertThrows.isFalse(originCurrency == destinationCurrency) {
             BusinessException.with("Unable to perform conversion, please inform two different currencies")
         }
 
-        val originCurrency = CurrencyType.findByName(input.originCurrency)
         val originRate = conversionRateService.getRates()[originCurrency.name]
             ?: throw BusinessException.with("Origin currency not available for conversion. Please select another one")
 
-        val destinationCurrency = CurrencyType.findByName(input.destinationCurrency)
         val destinationRate = conversionRateService.getRates()[destinationCurrency.name]
             ?: throw BusinessException.with("Destination currency not available for conversion. Please select another one")
 

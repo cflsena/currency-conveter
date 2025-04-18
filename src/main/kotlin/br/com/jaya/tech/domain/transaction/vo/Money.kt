@@ -13,10 +13,10 @@ data class Money(val amount: BigDecimal, val currency: CurrencyType) : ValueObje
 
         private const val NON_BREAKING_SPACE_CHAR = " "
 
-        fun of(amount: BigDecimal, currency: String, scale: Int, roundingMode: RoundingMode): Money {
+        fun of(amount: BigDecimal, currency: CurrencyType, scale: Int, roundingMode: RoundingMode): Money {
             AssertThrows.isTrue(amount > BigDecimal.ZERO)
             { DomainException.with("'amount' should be greater than zero") }
-            return Money(amount.setScale(scale, roundingMode), CurrencyType.findByName(currency))
+            return Money(amount.setScale(scale, roundingMode), currency)
         }
 
     }
