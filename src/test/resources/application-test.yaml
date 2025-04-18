@@ -34,4 +34,6 @@ springdoc:
 
 exchange:
   rates:
-    url: http://localhost:${wiremock.server.port}/v1/latest
+    url: http://localhost:${wiremock.server.port}/v1
+    access-key: "123456"
+    base-currency: "EUR"

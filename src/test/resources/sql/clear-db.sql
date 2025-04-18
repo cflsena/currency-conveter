@@ -1,2 +1,2 @@
-DELETE FROM JAYA_TECH.tb_user;
 DELETE FROM JAYA_TECH.tb_transaction;
+DELETE FROM JAYA_TECH.tb_user;
