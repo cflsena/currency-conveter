@@ -10,15 +10,17 @@ import org.springframework.stereotype.Component
 
 @Component
 class DefaultTransactionRepository(
-    private val repository: TransactionJpaRepository
+    private val repository: TransactionJpaRepository,
 ) : TransactionRepository {
-
     override fun save(transaction: Transaction): Transaction =
         repository.save(TransactionMapper.toEntity(transaction)).let(TransactionMapper::toDomain)
 
-    override fun findAll(userId: String, pageNumber: Int, pageSize: Int): PageDTO<Transaction> {
+    override fun findAll(
+        userId: String,
+        pageNumber: Int,
+        pageSize: Int,
+    ): PageDTO<Transaction> {
         val transactionPage = repository.findAllByUserId(userId, PageRequest.of(pageNumber, pageSize))
         return TransactionMapper.toPage(transactionPage)
     }
-
 }

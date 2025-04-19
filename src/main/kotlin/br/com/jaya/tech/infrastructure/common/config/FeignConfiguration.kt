@@ -7,15 +7,9 @@ import org.springframework.context.annotation.Configuration
 
 @Configuration
 class FeignConfiguration {
+    @Bean
+    fun client(): OkHttpClient = OkHttpClient()
 
     @Bean
-    fun client(): OkHttpClient {
-        return OkHttpClient()
-    }
-
-    @Bean
-    fun httpClientBuilder() : HttpClientBuilder {
-        return HttpClientBuilder.create()
-    }
-
+    fun httpClientBuilder(): HttpClientBuilder = HttpClientBuilder.create()
 }

@@ -7,7 +7,11 @@ import jakarta.inject.Named
 import java.math.BigDecimal
 import java.time.Instant
 
-data class CurrencyConversionsFilterInput(val userId: String, val pageNumber: Int, val pageSize: Int)
+data class CurrencyConversionsFilterInput(
+    val userId: String,
+    val pageNumber: Int,
+    val pageSize: Int,
+)
 
 data class CurrencyConversionsOutput(
     val id: String,
@@ -19,22 +23,21 @@ data class CurrencyConversionsOutput(
     val destinationAmount: BigDecimal,
     val destinationAmountFormatted: String,
     val conversionRate: BigDecimal,
-    val createdAt: Instant
+    val createdAt: Instant,
 ) {
     companion object {
-        fun from(page: PageDTO<Transaction>): PageDTO<CurrencyConversionsOutput> {
-            return PageDTO(
+        fun from(page: PageDTO<Transaction>): PageDTO<CurrencyConversionsOutput> =
+            PageDTO(
                 page.pageNumber,
                 page.pageSize,
                 page.numberOfElements,
                 page.totalPages,
                 page.totalElements,
-                if(page.items.isNotEmpty()) page.items.map { from(it) } else listOf()
+                if (page.items.isNotEmpty()) page.items.map { from(it) } else listOf(),
             )
-        }
 
-        fun from(transaction: Transaction): CurrencyConversionsOutput {
-            return CurrencyConversionsOutput(
+        fun from(transaction: Transaction): CurrencyConversionsOutput =
+            CurrencyConversionsOutput(
                 transaction.id().value(),
                 transaction.userId,
                 transaction.originMoney.currency.name,
@@ -46,17 +49,15 @@ data class CurrencyConversionsOutput(
                 transaction.conversionRate,
                 transaction.createdAt,
             )
-        }
-
     }
 }
 
 @Named
-class DefaultListCurrencyConversionsUseCase(private val transactionRepository: TransactionRepository) : ListCurrencyConversionsUseCase {
-
+class DefaultListCurrencyConversionsUseCase(
+    private val transactionRepository: TransactionRepository,
+) : ListCurrencyConversionsUseCase {
     override fun execute(input: CurrencyConversionsFilterInput): PageDTO<CurrencyConversionsOutput> {
         val transactionPage = transactionRepository.findAll(input.userId, input.pageNumber, input.pageSize)
         return CurrencyConversionsOutput.from(transactionPage)
     }
-
 }

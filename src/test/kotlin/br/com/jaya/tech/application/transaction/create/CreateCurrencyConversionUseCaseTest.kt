@@ -22,7 +22,6 @@ import java.math.BigDecimal
 
 @DisplayName("Unit Test for Create Currency Conversion Use Case Test")
 class CreateCurrencyConversionUseCaseTest : UseCaseTest() {
-
     @InjectMocks
     private lateinit var useCase: DefaultCreateCurrencyConversionUseCase
 
@@ -37,7 +36,6 @@ class CreateCurrencyConversionUseCaseTest : UseCaseTest() {
 
     @Test
     fun givenAValidInput_whenCallExecute_shouldCreateTransactionCurrencyConversion() {
-
         val expectedUserId = IdUtils.generate()
         val expectedOriginAmount = BigDecimal("100.00")
         val expectedOriginCurrency = CurrencyType.BRL.name
@@ -48,12 +46,13 @@ class CreateCurrencyConversionUseCaseTest : UseCaseTest() {
         val expectedConversionRate = BigDecimal("0.1702273")
         val expectedDestinationAmount = BigDecimal("17.02")
 
-        val input = CreateCurrencyConversionInput(
-            expectedUserId,
-            expectedOriginAmount,
-            expectedOriginCurrency,
-            expectedDestinationCurrency
-        )
+        val input =
+            CreateCurrencyConversionInput(
+                expectedUserId,
+                expectedOriginAmount,
+                expectedOriginCurrency,
+                expectedDestinationCurrency,
+            )
 
         given(userRepository.existsById(any<String>())).willReturn(true)
         given(conversionRateService.getRates()).willReturn(expectedRates)
@@ -73,20 +72,20 @@ class CreateCurrencyConversionUseCaseTest : UseCaseTest() {
 
         verify(userRepository, times(1)).existsById(argThat { userId -> userId == expectedUserId })
 
-        verify(transactionRepository, times(1)).save(argThat { transaction ->
-            expectedUserId == transaction.userId &&
-            expectedOriginCurrency == transaction.originMoney.currency.name &&
-            expectedOriginAmount == transaction.originMoney.amount &&
-            expectedDestinationCurrency == transaction.destinationMoney.currency.name &&
-            expectedDestinationAmount == transaction.destinationMoney.amount &&
-            expectedConversionRate == transaction.conversionRate
-        })
-
+        verify(transactionRepository, times(1)).save(
+            argThat { transaction ->
+                expectedUserId == transaction.userId &&
+                    expectedOriginCurrency == transaction.originMoney.currency.name &&
+                    expectedOriginAmount == transaction.originMoney.amount &&
+                    expectedDestinationCurrency == transaction.destinationMoney.currency.name &&
+                    expectedDestinationAmount == transaction.destinationMoney.amount &&
+                    expectedConversionRate == transaction.conversionRate
+            },
+        )
     }
 
     @Test
     fun givenTheSameCurrenciesAsInput_whenCallExecute_shouldThrowsAnException() {
-
         val expectedErrorMessage = "Unable to perform conversion, please inform two different currencies"
 
         val expectedUserId = IdUtils.generate()
@@ -94,27 +93,27 @@ class CreateCurrencyConversionUseCaseTest : UseCaseTest() {
         val expectedOriginCurrency = CurrencyType.BRL.name
         val expectedDestinationCurrency = CurrencyType.BRL.name
 
-        val input = CreateCurrencyConversionInput(
-            expectedUserId,
-            expectedOriginAmount,
-            expectedOriginCurrency,
-            expectedDestinationCurrency
-        )
+        val input =
+            CreateCurrencyConversionInput(
+                expectedUserId,
+                expectedOriginAmount,
+                expectedOriginCurrency,
+                expectedDestinationCurrency,
+            )
 
         given(userRepository.existsById(any<String>())).willReturn(true)
 
-        val exception = Assertions.assertThrows(
-            BusinessException::class.java
-        ) { useCase.execute(input) }
+        val exception =
+            Assertions.assertThrows(
+                BusinessException::class.java,
+            ) { useCase.execute(input) }
 
         verifyNoInteractions(conversionRateService, transactionRepository)
         assertEquals(expectedErrorMessage, exception.message)
-
     }
 
     @Test
     fun givenANotRegisteredUser_whenCallExecute_shouldThrowsAnException() {
-
         val expectedUserId = IdUtils.generate()
         val expectedOriginAmount = BigDecimal("100.00")
         val expectedOriginCurrency = CurrencyType.BRL.name
@@ -122,27 +121,27 @@ class CreateCurrencyConversionUseCaseTest : UseCaseTest() {
 
         val expectedErrorMessage = "Unable to perform conversion, user with id $expectedUserId not found"
 
-        val input = CreateCurrencyConversionInput(
-            expectedUserId,
-            expectedOriginAmount,
-            expectedOriginCurrency,
-            expectedDestinationCurrency
-        )
+        val input =
+            CreateCurrencyConversionInput(
+                expectedUserId,
+                expectedOriginAmount,
+                expectedOriginCurrency,
+                expectedDestinationCurrency,
+            )
 
         given(userRepository.existsById(any<String>())).willReturn(false)
 
-        val exception = Assertions.assertThrows(
-            NotFoundException::class.java
-        ) { useCase.execute(input) }
+        val exception =
+            Assertions.assertThrows(
+                NotFoundException::class.java,
+            ) { useCase.execute(input) }
 
         verifyNoInteractions(conversionRateService, transactionRepository)
         assertEquals(expectedErrorMessage, exception.message)
-
     }
 
     @Test
     fun givenANotAvailableOriginCurrency_whenCallExecute_shouldThrowsAnException() {
-
         val expectedErrorMessage = "Origin currency not available for conversion. Please select another one"
 
         val expectedUserId = IdUtils.generate()
@@ -154,28 +153,28 @@ class CreateCurrencyConversionUseCaseTest : UseCaseTest() {
         val expectedDestinationConversionRate = Pair(expectedDestinationCurrency, BigDecimal("1.138194"))
         val expectedRates = mapOf(expectedOriginConversionRate, expectedDestinationConversionRate)
 
-        val input = CreateCurrencyConversionInput(
-            expectedUserId,
-            expectedOriginAmount,
-            expectedOriginCurrency,
-            expectedDestinationCurrency
-        )
+        val input =
+            CreateCurrencyConversionInput(
+                expectedUserId,
+                expectedOriginAmount,
+                expectedOriginCurrency,
+                expectedDestinationCurrency,
+            )
 
         given(userRepository.existsById(any<String>())).willReturn(true)
         given(conversionRateService.getRates()).willReturn(expectedRates)
 
-        val exception = Assertions.assertThrows(
-            BusinessException::class.java
-        ) { useCase.execute(input) }
+        val exception =
+            Assertions.assertThrows(
+                BusinessException::class.java,
+            ) { useCase.execute(input) }
 
         assertEquals(expectedErrorMessage, exception.message)
         verifyNoInteractions(transactionRepository)
-
     }
 
     @Test
     fun givenANotAvailableDestinationCurrency_whenCallExecute_shouldThrowsAnException() {
-
         val expectedErrorMessage = "Destination currency not available for conversion. Please select another one"
 
         val expectedUserId = IdUtils.generate()
@@ -187,23 +186,23 @@ class CreateCurrencyConversionUseCaseTest : UseCaseTest() {
         val expectedDestinationConversionRate = Pair(CurrencyType.JPY.name, BigDecimal("1.138194"))
         val expectedRates = mapOf(expectedOriginConversionRate, expectedDestinationConversionRate)
 
-        val input = CreateCurrencyConversionInput(
-            expectedUserId,
-            expectedOriginAmount,
-            expectedOriginCurrency,
-            expectedDestinationCurrency
-        )
+        val input =
+            CreateCurrencyConversionInput(
+                expectedUserId,
+                expectedOriginAmount,
+                expectedOriginCurrency,
+                expectedDestinationCurrency,
+            )
 
         given(userRepository.existsById(any<String>())).willReturn(true)
         given(conversionRateService.getRates()).willReturn(expectedRates)
 
-        val exception = Assertions.assertThrows(
-            BusinessException::class.java
-        ) { useCase.execute(input) }
+        val exception =
+            Assertions.assertThrows(
+                BusinessException::class.java,
+            ) { useCase.execute(input) }
 
         assertEquals(expectedErrorMessage, exception.message)
         verifyNoInteractions(transactionRepository)
-
     }
-
 }

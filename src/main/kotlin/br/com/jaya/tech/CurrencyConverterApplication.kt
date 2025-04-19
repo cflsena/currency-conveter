@@ -16,5 +16,5 @@ import org.springframework.context.annotation.ComponentScan
 class CurrencyConverterApplication
 
 fun main(args: Array<String>) {
-	runApplication<CurrencyConverterApplication>(*args)
+    runApplication<CurrencyConverterApplication>(*args)
 }

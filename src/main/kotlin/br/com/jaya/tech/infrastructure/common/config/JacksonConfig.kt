@@ -12,7 +12,6 @@ import org.springframework.context.annotation.Configuration
 
 @Configuration
 class JacksonConfig {
-
     @Bean
     fun jacksonCustomizer(): Jackson2ObjectMapperBuilderCustomizer =
         Jackson2ObjectMapperBuilderCustomizer { builder ->
@@ -20,12 +19,11 @@ class JacksonConfig {
                 modulesToInstall(
                     KotlinModule::class.java,
                     Jdk8Module::class.java,
-                    JavaTimeModule::class.java
+                    JavaTimeModule::class.java,
                 )
                 featuresToDisable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
                 featuresToDisable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
                 serializationInclusion(JsonInclude.Include.NON_NULL)
             }
         }
-
 }

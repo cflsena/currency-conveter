@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.RestControllerAdvice
 
 @RestControllerAdvice
 class GlobalExceptionHandler {
-
     companion object {
         private const val BAD_REQUEST_DEFAULT_MESSAGE = "Invalid Request. Please check payload request"
         private const val UNAVAILABLE_SERVICE_MESSAGE = "Unable to process request. Please try again later"
@@ -28,16 +27,14 @@ class GlobalExceptionHandler {
     private val log: Logger = LoggerFactory.getLogger(GlobalExceptionHandler::class.java)
 
     @ExceptionHandler(
-        DomainException::class, BusinessException::class, ResourceAlreadyCreatedException::class
+        DomainException::class,
+        BusinessException::class,
+        ResourceAlreadyCreatedException::class,
     )
-    fun handle(ex: BaseException): ResponseEntity<Error> {
-        return ResponseEntity<Error>(Error.with(ex.message!!), HttpStatus.UNPROCESSABLE_ENTITY)
-    }
+    fun handle(ex: BaseException): ResponseEntity<Error> = ResponseEntity<Error>(Error.with(ex.message!!), HttpStatus.UNPROCESSABLE_ENTITY)
 
     @ExceptionHandler(NotFoundException::class)
-    fun handle(ex: NotFoundException): ResponseEntity<Error> {
-        return ResponseEntity<Error>(Error.with(ex.message!!), HttpStatus.NOT_FOUND)
-    }
+    fun handle(ex: NotFoundException): ResponseEntity<Error> = ResponseEntity<Error>(Error.with(ex.message!!), HttpStatus.NOT_FOUND)
 
     @ExceptionHandler(FeignException::class)
     fun handle(ex: FeignException): ResponseEntity<Error> {
@@ -53,8 +50,6 @@ class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(HttpMessageNotReadableException::class)
-    fun handleBadRequest(ex: HttpMessageNotReadableException): ResponseEntity<Error> {
-        return ResponseEntity.badRequest().body(Error.with(BAD_REQUEST_DEFAULT_MESSAGE))
-    }
-
+    fun handleBadRequest(ex: HttpMessageNotReadableException): ResponseEntity<Error> =
+        ResponseEntity.badRequest().body(Error.with(BAD_REQUEST_DEFAULT_MESSAGE))
 }

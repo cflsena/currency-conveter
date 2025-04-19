@@ -4,33 +4,37 @@ import br.com.jaya.tech.domain.common.entity.ValueObject
 import br.com.jaya.tech.domain.common.exception.DomainException
 import br.com.jaya.tech.shared.assert.AssertThrows
 
-data class Name(val givenName: String, val familyName: String) : ValueObject() {
+data class Name(
+    val givenName: String,
+    val familyName: String,
+) : ValueObject() {
     companion object {
-
         private const val MIN_SIZE_NAME = 3
         private const val MAX_SIZE_NAME = 50
 
-        fun of(givenName: String?, familyName: String?): Name {
+        fun of(
+            givenName: String?,
+            familyName: String?,
+        ): Name {
             validate(givenName, familyName)
             return Name(givenName!!, familyName!!)
         }
 
-        private fun validate(givenName: String?, familyName: String?) {
+        private fun validate(
+            givenName: String?,
+            familyName: String?,
+        ) {
+            AssertThrows.isTrue(!givenName.isNullOrBlank()) { DomainException.with("'givenName' should not be null or empty") }
 
-            AssertThrows.isTrue(!givenName.isNullOrBlank())
-            { DomainException.with("'givenName' should not be null or empty") }
+            AssertThrows.isTrue(givenName!!.length >= MIN_SIZE_NAME) {
+                DomainException.with("'givenName' invalid size, should be between $MIN_SIZE_NAME and $MAX_SIZE_NAME")
+            }
 
-            AssertThrows.isTrue(givenName!!.length >= MIN_SIZE_NAME)
-            { DomainException.with("'givenName' invalid size, should be between $MIN_SIZE_NAME and $MAX_SIZE_NAME") }
+            AssertThrows.isTrue(!familyName.isNullOrBlank()) { DomainException.with("'familyName' should not be null or empty") }
 
-            AssertThrows.isTrue(!familyName.isNullOrBlank())
-            { DomainException.with("'familyName' should not be null or empty") }
-
-            AssertThrows.isTrue(familyName!!.length >= MIN_SIZE_NAME)
-            { DomainException.with("'familyName' invalid size, should be between $MIN_SIZE_NAME and $MAX_SIZE_NAME") }
-
+            AssertThrows.isTrue(familyName!!.length >= MIN_SIZE_NAME) {
+                DomainException.with("'familyName' invalid size, should be between $MIN_SIZE_NAME and $MAX_SIZE_NAME")
+            }
         }
-
     }
-
 }

@@ -15,10 +15,9 @@ import org.springframework.test.context.ActiveProfiles
 @AutoConfigureWireMock(port = 0)
 @SpringBootTest(
     webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
-    classes = [CurrencyConverterApplication::class]
+    classes = [CurrencyConverterApplication::class],
 )
 class E2ESupport {
-
     @Autowired
     lateinit var context: ServletWebServerApplicationContext
 
@@ -27,5 +26,4 @@ class E2ESupport {
         RestAssured.enableLoggingOfRequestAndResponseIfValidationFails()
         RestAssured.port = context.webServer.port
     }
-
 }

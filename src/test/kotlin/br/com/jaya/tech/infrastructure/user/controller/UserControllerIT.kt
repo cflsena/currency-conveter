@@ -23,7 +23,6 @@ import kotlin.test.assertNotNull
 
 @DisplayName("Integration test for User Controller")
 class UserControllerIT : E2ESupport() {
-
     @Autowired
     lateinit var userRepository: UserJpaRepository
 
@@ -35,10 +34,9 @@ class UserControllerIT : E2ESupport() {
 
     @Test
     @Sql(
-        "classpath:/sql/clear-db.sql"
+        "classpath:/sql/clear-db.sql",
     )
     fun givenAValidRequest_whenCallCreateUserAccount_shouldReturnUser() {
-
         val expectedGivenName = "John"
         val expectedFamilyName = "Doe"
         val expectedEmail = "test@test.com"
@@ -47,13 +45,15 @@ class UserControllerIT : E2ESupport() {
 
         assertTrue(userRepository.findAll().isEmpty())
 
-        val response = given()
-            .contentType(ContentType.JSON)
-            .body(requestBody)
-            .`when`()
-            .post(BASE_PATH)
+        val response =
+            given()
+                .contentType(ContentType.JSON)
+                .body(requestBody)
+                .`when`()
+                .post(BASE_PATH)
 
-        response.then()
+        response
+            .then()
             .assertThat()
             .statusCode(HttpStatus.CREATED.value())
             .log()
@@ -68,7 +68,6 @@ class UserControllerIT : E2ESupport() {
         assertEquals(expectedGivenName, userFound.get().givenName)
         assertEquals(expectedFamilyName, userFound.get().familyName)
         assertEquals(expectedEmail, userFound.get().email)
-
     }
 
     @Test
@@ -77,7 +76,6 @@ class UserControllerIT : E2ESupport() {
         "classpath:/sql/user/insert_user.sql",
     )
     fun givenAnEmailAlreadyRegistered_whenCallCreateUserAccount_shouldThrowsAnException() {
-
         val requestBody = readJsonAsString("user/create_user_account_request.json")
 
         given()
@@ -91,7 +89,6 @@ class UserControllerIT : E2ESupport() {
             .body("message", equalTo("Failed to process request. Please, try again later"))
             .log()
             .all()
-
     }
 
     @ParameterizedTest
@@ -113,7 +110,7 @@ class UserControllerIT : E2ESupport() {
               "givenName": "John",
               "familyName": "Doe",
             }
-        """
+        """,
     )
     @Sql("classpath:/sql/clear-db.sql")
     fun givenAnInvalidRequest_whenCallCreateUserAccount_shouldThrowsAnException(invalidRequest: String) {
@@ -129,5 +126,4 @@ class UserControllerIT : E2ESupport() {
             .log()
             .all()
     }
-
 }

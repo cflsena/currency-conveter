@@ -6,6 +6,5 @@ class PageDTO<T>(
     val numberOfElements: Int,
     val totalPages: Int,
     val totalElements: Int,
-    val items: List<T>
-) {
-}
+    val items: List<T>,
+)

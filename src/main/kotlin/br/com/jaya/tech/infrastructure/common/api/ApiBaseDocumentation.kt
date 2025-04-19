@@ -15,9 +15,9 @@ import org.springframework.http.MediaType
             content = [
                 Content(
                     mediaType = MediaType.APPLICATION_JSON_VALUE,
-                    schema = Schema(implementation = Error::class)
-                )
-            ]
+                    schema = Schema(implementation = Error::class),
+                ),
+            ],
         ),
         ApiResponse(
             responseCode = "500",
@@ -25,11 +25,10 @@ import org.springframework.http.MediaType
             content = [
                 Content(
                     mediaType = MediaType.APPLICATION_JSON_VALUE,
-                    schema = Schema(implementation = Error::class)
-                )
-            ]
+                    schema = Schema(implementation = Error::class),
+                ),
+            ],
         ),
-    ]
+    ],
 )
-interface ApiBaseDocumentation {
-}
+interface ApiBaseDocumentation

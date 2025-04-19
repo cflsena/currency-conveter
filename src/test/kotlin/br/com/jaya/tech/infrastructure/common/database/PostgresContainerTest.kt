@@ -7,4 +7,4 @@ import org.testcontainers.junit.jupiter.Testcontainers
 @Target(AnnotationTarget.CLASS)
 @Retention(AnnotationRetention.RUNTIME)
 @ContextConfiguration(initializers = [PostgresTestContainerInitializer::class])
-annotation class PostgresContainerTest()
+annotation class PostgresContainerTest

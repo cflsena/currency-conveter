@@ -4,7 +4,6 @@ import br.com.jaya.tech.domain.common.exception.DomainException
 import java.util.*
 
 enum class CurrencyType {
-
     BRL {
         override fun locale(): Locale = Locale("pt", "BR")
     },
@@ -16,15 +15,13 @@ enum class CurrencyType {
     },
     JPY {
         override fun locale(): Locale = Locale.JAPAN
-    };
+    }, ;
 
     abstract fun locale(): Locale
 
     companion object {
-        fun findByName(name: String) : CurrencyType {
-            return entries.firstOrNull { it.name.equals(name, ignoreCase = true) }
+        fun findByName(name: String): CurrencyType =
+            entries.firstOrNull { it.name.equals(name, ignoreCase = true) }
                 ?: throw DomainException.with("currency $name invalid, available values $entries")
-        }
     }
-
 }

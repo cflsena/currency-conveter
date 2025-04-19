@@ -8,5 +8,8 @@ import org.springframework.stereotype.Repository
 
 @Repository
 interface TransactionJpaRepository : JpaRepository<TransactionEntity, String> {
-    fun findAllByUserId(userId: String, pageable: Pageable): Page<TransactionEntity>
+    fun findAllByUserId(
+        userId: String,
+        pageable: Pageable,
+    ): Page<TransactionEntity>
 }

@@ -15,11 +15,9 @@ import java.math.BigDecimal
 
 @DisplayName("Unit Test for Transaction Entity")
 class TransactionTest {
-
     @ParameterizedTest
     @ValueSource(strings = ["", "85fc5f36-fe55-4d77-816d-8f6edfd395d5"])
     fun givenValidParams_whenCallBuilder_shouldInstantiateTransaction(expectedId: String) {
-
         val expectedUserId = IdUtils.generate()
         val expectedOriginAmount = BigDecimal("100.00")
         val expectedOriginCurrency = CurrencyType.BRL
@@ -27,14 +25,16 @@ class TransactionTest {
         val expectedDestinationAmount = BigDecimal("17.12")
         val expectedConversionRate = BigDecimal("0.1711596")
 
-        val transactionCreated = Transaction.builder()
-            .id(expectedId)
-            .userId(expectedUserId)
-            .originAmount(expectedOriginAmount)
-            .originCurrency(expectedOriginCurrency)
-            .destinationCurrency(expectedDestinationCurrency)
-            .conversionRate(expectedConversionRate)
-            .build()
+        val transactionCreated =
+            Transaction
+                .builder()
+                .id(expectedId)
+                .userId(expectedUserId)
+                .originAmount(expectedOriginAmount)
+                .originCurrency(expectedOriginCurrency)
+                .destinationCurrency(expectedDestinationCurrency)
+                .conversionRate(expectedConversionRate)
+                .build()
 
         assertNotNull(transactionCreated.id())
         assertNotNull(transactionCreated.id().value())
@@ -48,125 +48,128 @@ class TransactionTest {
         assertEquals(expectedDestinationCurrency, transactionCreated.destinationMoney.currency)
         assertEquals(expectedDestinationAmount, transactionCreated.destinationMoney.amount)
         assertEquals(expectedConversionRate, transactionCreated.conversionRate)
-
     }
 
     @ParameterizedTest
     @NullAndEmptySource
     fun givenAnInvalidUserId_whenCallBuilder_shouldThrowsAnException(invalidUserId: String?) {
-
         val expectedErrorMessage = "'userId' should not be null or empty"
 
-        val transactionCreated = Transaction.builder()
-            .originAmount(BigDecimal("100.00"))
-            .originCurrency(CurrencyType.BRL)
-            .destinationCurrency(CurrencyType.USD)
-            .conversionRate(BigDecimal("0.1711596"))
+        val transactionCreated =
+            Transaction
+                .builder()
+                .originAmount(BigDecimal("100.00"))
+                .originCurrency(CurrencyType.BRL)
+                .destinationCurrency(CurrencyType.USD)
+                .conversionRate(BigDecimal("0.1711596"))
 
         if (invalidUserId != null) {
             transactionCreated.userId(invalidUserId)
         }
 
-        val exception = assertThrows(
-            DomainException::class.java,
-        ) { transactionCreated.build() }
+        val exception =
+            assertThrows(
+                DomainException::class.java,
+            ) { transactionCreated.build() }
 
         assertEquals(expectedErrorMessage, exception.message)
-
     }
 
     @ParameterizedTest
     @NullSource
     @ValueSource(strings = ["0", "-1"])
     fun givenAnInvalidConversionRate_whenCallBuilder_shouldThrowsAnException(invalidConversionRate: BigDecimal?) {
-
         val expectedErrorMessage01 = "'conversionRate' should not be null"
         val expectedErrorMessage02 = "'conversionRate' should be greater than zero"
 
-
-        val transactionCreated = Transaction.builder()
-            .userId(IdUtils.generate())
-            .originAmount(BigDecimal("100.00"))
-            .originCurrency(CurrencyType.BRL)
-            .destinationCurrency(CurrencyType.USD)
+        val transactionCreated =
+            Transaction
+                .builder()
+                .userId(IdUtils.generate())
+                .originAmount(BigDecimal("100.00"))
+                .originCurrency(CurrencyType.BRL)
+                .destinationCurrency(CurrencyType.USD)
 
         if (invalidConversionRate != null) {
             transactionCreated.conversionRate(invalidConversionRate)
         }
 
-        val exception = assertThrows(
-            DomainException::class.java,
-        ) { transactionCreated.build() }
+        val exception =
+            assertThrows(
+                DomainException::class.java,
+            ) { transactionCreated.build() }
 
         assertTrue(exception.message.equals(expectedErrorMessage01) || exception.message.equals(expectedErrorMessage02))
-
     }
 
     @NullSource
     @ValueSource(strings = ["0", "-1"])
     @ParameterizedTest
     fun givenAnInvalidOriginAmount_whenCallBuilder_shouldThrowsAnException(invalidOriginAmount: BigDecimal?) {
-
         val expectedErrorMessage01 = "'originAmount' should not be null"
         val expectedErrorMessage02 = "'amount' should be greater than zero"
 
-        val transactionCreated = Transaction.builder()
-            .userId(IdUtils.generate())
-            .originCurrency(CurrencyType.BRL)
-            .destinationCurrency(CurrencyType.USD)
-            .conversionRate(BigDecimal("0.1711596"))
+        val transactionCreated =
+            Transaction
+                .builder()
+                .userId(IdUtils.generate())
+                .originCurrency(CurrencyType.BRL)
+                .destinationCurrency(CurrencyType.USD)
+                .conversionRate(BigDecimal("0.1711596"))
 
-        if(invalidOriginAmount != null) {
+        if (invalidOriginAmount != null) {
             transactionCreated.originAmount(invalidOriginAmount)
         }
 
-        val exception = assertThrows(
-            DomainException::class.java,
-        ) { transactionCreated.build() }
+        val exception =
+            assertThrows(
+                DomainException::class.java,
+            ) { transactionCreated.build() }
 
         assertTrue(exception.message.equals(expectedErrorMessage01) || exception.message.equals(expectedErrorMessage02))
-
     }
 
     @ParameterizedTest
     @NullSource
     @ValueSource(strings = ["ABCD"])
     fun givenAnInvalidOriginCurrency_whenCallBuilder_shouldThrowsAnException(invalidOriginCurrency: String?) {
-
         val expectedErrorMessage01 = "'originCurrency' should not be null or empty"
         val expectedErrorMessage02 = "currency $invalidOriginCurrency invalid, available values ${CurrencyType.entries}"
 
-        val transactionCreated = Transaction.builder()
-            .userId(IdUtils.generate())
-            .originAmount(BigDecimal("100.00"))
-            .destinationCurrency(CurrencyType.USD)
-            .conversionRate(BigDecimal("0.1711596"))
+        val transactionCreated =
+            Transaction
+                .builder()
+                .userId(IdUtils.generate())
+                .originAmount(BigDecimal("100.00"))
+                .destinationCurrency(CurrencyType.USD)
+                .conversionRate(BigDecimal("0.1711596"))
 
-        val exception = assertThrows(
-            DomainException::class.java,
-        ) { transactionCreated.build() }
+        val exception =
+            assertThrows(
+                DomainException::class.java,
+            ) { transactionCreated.build() }
 
         assertTrue(exception.message.equals(expectedErrorMessage01) || exception.message.equals(expectedErrorMessage02))
-
     }
 
     @Test
     fun givenAnInvalidDestinationCurrency_whenCallBuilder_shouldThrowsAnException() {
-
         val expectedErrorMessage = "'destinationCurrency' should not be null or empty"
 
-        val transactionCreated = Transaction.builder()
-            .userId(IdUtils.generate())
-            .originAmount(BigDecimal("100.00"))
-            .originCurrency(CurrencyType.BRL)
-            .conversionRate(BigDecimal("0.1711596"))
+        val transactionCreated =
+            Transaction
+                .builder()
+                .userId(IdUtils.generate())
+                .originAmount(BigDecimal("100.00"))
+                .originCurrency(CurrencyType.BRL)
+                .conversionRate(BigDecimal("0.1711596"))
 
-        val exception = assertThrows(
-            DomainException::class.java,
-        ) { transactionCreated.build() }
+        val exception =
+            assertThrows(
+                DomainException::class.java,
+            ) { transactionCreated.build() }
 
         assertEquals(expectedErrorMessage, exception.message)
-
     }
 
     @ParameterizedTest
@@ -177,26 +180,26 @@ class TransactionTest {
         "USD;EUR;$10,000.00;1.711,60 €",
         "USD;JPY;$10,000.00;￥1,712",
         "EUR;JPY;10.000,00 €;￥1,712",
-        delimiter = ';'
+        delimiter = ';',
     )
     fun givenValidTransaction_whenGetFormattedAmount_shouldReturnOriginAndDestinationFormattedMoney(
         originCurrency: CurrencyType,
         destinationCurrency: CurrencyType,
         originFormattedMoney: String,
-        destinationFormattedMoney: String
+        destinationFormattedMoney: String,
     ) {
-
-        val transactionCreated = Transaction.builder()
-            .userId(IdUtils.generate())
-            .originAmount(BigDecimal("10000"))
-            .originCurrency(originCurrency)
-            .destinationCurrency(destinationCurrency)
-            .conversionRate(BigDecimal("0.1711596"))
-            .build()
+        val transactionCreated =
+            Transaction
+                .builder()
+                .userId(IdUtils.generate())
+                .originAmount(BigDecimal("10000"))
+                .originCurrency(originCurrency)
+                .destinationCurrency(destinationCurrency)
+                .conversionRate(BigDecimal("0.1711596"))
+                .build()
 
         assertEquals(originFormattedMoney, transactionCreated.originMoney.formattedAmount())
         assertEquals(destinationFormattedMoney, transactionCreated.destinationMoney.formattedAmount())
-
     }
 
     @Test
@@ -225,5 +228,4 @@ class TransactionTest {
         val transaction02 = TransactionId.create(IdUtils.generate())
         assertNotEquals(transaction01, transaction02)
     }
-
 }

@@ -20,7 +20,6 @@ import java.math.BigDecimal
 @Import(DefaultTransactionRepository::class)
 @DisplayName("Integration test for Transaction Repository")
 class TransactionRepositoryIT : DatabaseSupportIT() {
-
     @Autowired
     lateinit var transactionRepository: TransactionRepository
 
@@ -30,20 +29,21 @@ class TransactionRepositoryIT : DatabaseSupportIT() {
     @Test
     @Sql(
         "classpath:/sql/clear-db.sql",
-        "classpath:/sql/user/insert_user.sql"
+        "classpath:/sql/user/insert_user.sql",
     )
     fun givenAValidUser_whenCallSave_shouldPersistTransaction() {
-
         val registeredUserId = "85fc5f36-fe55-4d77-816d-8f6edfd395d5"
 
-        val transactionToSave = Transaction.builder()
-            .id(IdUtils.generate())
-            .userId(registeredUserId)
-            .originCurrency(CurrencyType.BRL)
-            .originAmount(BigDecimal("100"))
-            .destinationCurrency(CurrencyType.USD)
-            .conversionRate(BigDecimal("0.1702273"))
-            .build()
+        val transactionToSave =
+            Transaction
+                .builder()
+                .id(IdUtils.generate())
+                .userId(registeredUserId)
+                .originCurrency(CurrencyType.BRL)
+                .originAmount(BigDecimal("100"))
+                .destinationCurrency(CurrencyType.USD)
+                .conversionRate(BigDecimal("0.1702273"))
+                .build()
 
         val transactionCreated = transactionRepository.save(transactionToSave)
         assertNotNull(transactionCreated)
@@ -59,7 +59,6 @@ class TransactionRepositoryIT : DatabaseSupportIT() {
         assertNotNull(transactionCreated.destinationMoney.amount)
         assertEquals(transactionCreated.conversionRate, transactionFound.conversionRate)
         assertEquals(transactionCreated.createdAt, transactionFound.createdAt)
-
     }
 
     @ParameterizedTest(name = "list transactions of user {0} in page number {1}")
@@ -72,12 +71,12 @@ class TransactionRepositoryIT : DatabaseSupportIT() {
     @Sql(
         "classpath:/sql/clear-db.sql",
         "classpath:/sql/user/insert_user.sql",
-        "classpath:/sql/transaction/insert_transaction.sql"
+        "classpath:/sql/transaction/insert_transaction.sql",
     )
     fun givenAValidUserIdAsFilter_whenCallFindAll_shouldReturnATransactionPage(
-        registeredUserId: String, expectedPageNumber: Int,
+        registeredUserId: String,
+        expectedPageNumber: Int,
     ) {
-
         val expectedPageSize = 3
         val expectedNumberOfElements = 3
         val expectedTotalElements = 6
@@ -87,14 +86,12 @@ class TransactionRepositoryIT : DatabaseSupportIT() {
 
         assertNotNull(transactionPage)
         assertFalse(transactionPage.items.isEmpty())
-        assertTrue(transactionPage.items.stream().allMatch { it.userId == registeredUserId } )
+        assertTrue(transactionPage.items.stream().allMatch { it.userId == registeredUserId })
 
         assertEquals(expectedPageNumber, transactionPage.pageNumber)
         assertEquals(expectedPageSize, transactionPage.pageSize)
         assertEquals(expectedNumberOfElements, transactionPage.numberOfElements)
         assertEquals(expectedTotalElements, transactionPage.totalElements)
         assertEquals(expectedTotalPages, transactionPage.totalPages)
-
     }
-
 }

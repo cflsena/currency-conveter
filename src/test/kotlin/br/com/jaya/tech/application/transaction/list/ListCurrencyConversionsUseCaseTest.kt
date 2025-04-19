@@ -16,7 +16,6 @@ import java.math.BigDecimal
 
 @DisplayName("Unit Test for List Currency Conversions Use Case Test")
 class ListCurrencyConversionsUseCaseTest : UseCaseTest() {
-
     @InjectMocks
     private lateinit var useCase: DefaultListCurrencyConversionsUseCase
 
@@ -25,7 +24,6 @@ class ListCurrencyConversionsUseCaseTest : UseCaseTest() {
 
     @Test
     fun givenAnUserWithRegisteredTransactions_whenCallExecute_shouldReturnAPageOfTransactions() {
-
         val expectedUserId = IdUtils.generate()
         val expectedOriginAmount = BigDecimal("100.00")
         val expectedOriginCurrency = CurrencyType.BRL
@@ -39,23 +37,26 @@ class ListCurrencyConversionsUseCaseTest : UseCaseTest() {
         val expectedTotalPages = 1
         val expectedTotalElements = 1
 
-        val expectedTransaction = Transaction.builder()
-            .id(expectedUserId)
-            .userId(expectedUserId)
-            .originAmount(expectedOriginAmount)
-            .originCurrency(expectedOriginCurrency)
-            .destinationCurrency(expectedDestinationCurrency)
-            .conversionRate(expectedConversionRate)
-            .build()
+        val expectedTransaction =
+            Transaction
+                .builder()
+                .id(expectedUserId)
+                .userId(expectedUserId)
+                .originAmount(expectedOriginAmount)
+                .originCurrency(expectedOriginCurrency)
+                .destinationCurrency(expectedDestinationCurrency)
+                .conversionRate(expectedConversionRate)
+                .build()
 
-        val expectedTransactionPage = PageDTO(
-            expectedPageNumber,
-            expectedPageSize,
-            expectedNumberOfElements,
-            expectedTotalElements,
-            expectedTotalPages,
-            listOf(expectedTransaction)
-        )
+        val expectedTransactionPage =
+            PageDTO(
+                expectedPageNumber,
+                expectedPageSize,
+                expectedNumberOfElements,
+                expectedTotalElements,
+                expectedTotalPages,
+                listOf(expectedTransaction),
+            )
 
         val expectedOutput = CurrencyConversionsOutput.from(expectedTransaction)
 
@@ -68,7 +69,7 @@ class ListCurrencyConversionsUseCaseTest : UseCaseTest() {
         verify(transactionRepository, times(1)).findAll(
             argThat { userId -> userId == input.userId },
             argThat { pageNumber -> pageNumber == input.pageNumber },
-            argThat { pageSize -> pageSize == input.pageSize }
+            argThat { pageSize -> pageSize == input.pageSize },
         )
 
         assertNotNull(output.items)
@@ -80,12 +81,10 @@ class ListCurrencyConversionsUseCaseTest : UseCaseTest() {
         assertEquals(expectedTotalElements, output.totalElements)
         assertEquals(expectedOutput, output.items[0])
         assertEquals(expectedDestinationAmount, output.items[0].destinationAmount)
-
     }
 
     @Test
     fun givenAnUserWithoutRegisteredTransactions_whenCallExecute_shouldNotReturnAPageOfTransactions() {
-
         val expectedUserId = IdUtils.generate()
 
         val expectedPageNumber = 0
@@ -94,14 +93,15 @@ class ListCurrencyConversionsUseCaseTest : UseCaseTest() {
         val expectedTotalPages = 1
         val expectedTotalElements = 1
 
-        val expectedTransactionPage = PageDTO(
-            expectedPageNumber,
-            expectedPageSize,
-            expectedNumberOfElements,
-            expectedTotalElements,
-            expectedTotalPages,
-            listOf<Transaction>()
-        )
+        val expectedTransactionPage =
+            PageDTO(
+                expectedPageNumber,
+                expectedPageSize,
+                expectedNumberOfElements,
+                expectedTotalElements,
+                expectedTotalPages,
+                listOf<Transaction>(),
+            )
 
         val input = CurrencyConversionsFilterInput(expectedUserId, expectedPageNumber, expectedPageSize)
 
@@ -112,7 +112,7 @@ class ListCurrencyConversionsUseCaseTest : UseCaseTest() {
         verify(transactionRepository, times(1)).findAll(
             argThat { userId -> userId == input.userId },
             argThat { pageNumber -> pageNumber == input.pageNumber },
-            argThat { pageSize -> pageSize == input.pageSize }
+            argThat { pageSize -> pageSize == input.pageSize },
         )
 
         assertNotNull(output.items)
@@ -122,7 +122,5 @@ class ListCurrencyConversionsUseCaseTest : UseCaseTest() {
         assertEquals(expectedNumberOfElements, output.numberOfElements)
         assertEquals(expectedTotalPages, output.totalPages)
         assertEquals(expectedTotalElements, output.totalElements)
-
     }
-
 }

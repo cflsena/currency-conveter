@@ -9,21 +9,16 @@ import java.math.BigDecimal
 import java.math.RoundingMode
 import java.time.Instant
 
-data class TransactionId(private val value: String) : Identifier<String> {
+data class TransactionId(
+    private val value: String,
+) : Identifier<String> {
     companion object {
-        fun create(): TransactionId {
-            return TransactionId(IdUtils.generate())
-        }
+        fun create(): TransactionId = TransactionId(IdUtils.generate())
 
-        fun create(id: String): TransactionId {
-            return TransactionId(id)
-        }
+        fun create(id: String): TransactionId = TransactionId(id)
     }
 
-    override fun value(): String {
-        return this.value
-    }
-
+    override fun value(): String = this.value
 }
 
 class Transaction private constructor(
@@ -32,20 +27,16 @@ class Transaction private constructor(
     val originMoney: Money,
     val destinationMoney: Money,
     val conversionRate: BigDecimal,
-    val createdAt: Instant
+    val createdAt: Instant,
 ) : Entity<TransactionId> {
-
     companion object {
-        fun builder(): Builder {
-            return Builder()
-        }
+        fun builder(): Builder = Builder()
 
         private const val DEFAULT_AMOUNT_SCALE_SIZE = 2
         private val DEFAULT_ROUNDING_MODE = RoundingMode.HALF_EVEN
     }
 
     class Builder {
-
         private var id: String? = null
         private var userId: String? = null
         private var originAmount: BigDecimal? = null
@@ -55,21 +46,26 @@ class Transaction private constructor(
         private var createdAt: Instant? = null
 
         fun id(id: String) = apply { this.id = id }
+
         fun userId(userId: String) = apply { this.userId = userId }
+
         fun originAmount(originAmount: BigDecimal) = apply { this.originAmount = originAmount }
+
         fun originCurrency(originCurrency: CurrencyType) = apply { this.originCurrency = originCurrency }
+
         fun destinationCurrency(destinationCurrency: CurrencyType) = apply { this.destinationCurrency = destinationCurrency }
+
         fun conversionRate(conversionRate: BigDecimal) = apply { this.conversionRate = conversionRate }
+
         fun createdAt(createdAt: Instant) = apply { this.createdAt = createdAt }
 
         fun build(): Transaction {
-
             TransactionValidator.validate(
                 this.userId,
                 this.conversionRate,
                 this.originAmount,
                 this.originCurrency,
-                this.destinationCurrency
+                this.destinationCurrency,
             )
 
             val id = if (this.id == null) TransactionId.create() else TransactionId.create(this.id!!)
@@ -77,33 +73,29 @@ class Transaction private constructor(
 
             val createdAt = this.createdAt ?: Instant.now()
 
-            val originMoney = Money.of(
-                this.originAmount!!,
-                this.originCurrency!!,
-                DEFAULT_AMOUNT_SCALE_SIZE,
-                DEFAULT_ROUNDING_MODE
-            )
+            val originMoney =
+                Money.of(
+                    this.originAmount!!,
+                    this.originCurrency!!,
+                    DEFAULT_AMOUNT_SCALE_SIZE,
+                    DEFAULT_ROUNDING_MODE,
+                )
 
-            val destinationMoney = Money.of(
-                originMoney.amount.multiply(this.conversionRate),
-                this.destinationCurrency!!,
-                DEFAULT_AMOUNT_SCALE_SIZE,
-                DEFAULT_ROUNDING_MODE
-            )
+            val destinationMoney =
+                Money.of(
+                    originMoney.amount.multiply(this.conversionRate),
+                    this.destinationCurrency!!,
+                    DEFAULT_AMOUNT_SCALE_SIZE,
+                    DEFAULT_ROUNDING_MODE,
+                )
 
             return Transaction(id, userId, originMoney, destinationMoney, this.conversionRate!!, createdAt)
-
         }
-
     }
 
-    override fun id(): TransactionId {
-        return this.id
-    }
+    override fun id(): TransactionId = this.id
 
-    override fun toString(): String {
-        return "Transaction(id=$id, userId='$userId', originMoney=$originMoney, destinationMoney=$destinationMoney, " +
-                "conversionRate=$conversionRate, createdAt=$createdAt)"
-    }
-
+    override fun toString(): String =
+        "Transaction(id=$id, userId='$userId', originMoney=$originMoney, destinationMoney=$destinationMoney, " +
+            "conversionRate=$conversionRate, createdAt=$createdAt)"
 }

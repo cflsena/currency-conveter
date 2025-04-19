@@ -8,23 +8,32 @@ import jakarta.inject.Named
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
-data class CreateUserAccountInput(val givenName: String, val familyName: String, val email: String)
+data class CreateUserAccountInput(
+    val givenName: String,
+    val familyName: String,
+    val email: String,
+)
 
-data class CreateUserAccountOutput(val id: String)
+data class CreateUserAccountOutput(
+    val id: String,
+)
 
 @Named
-class DefaultCreateUserAccountUseCase(private val userRepository: UserRepository) : CreateUserAccountUseCase {
-
+class DefaultCreateUserAccountUseCase(
+    private val userRepository: UserRepository,
+) : CreateUserAccountUseCase {
     private val log: Logger = LoggerFactory.getLogger(DefaultCreateUserAccountUseCase::class.java)
 
     override fun execute(input: CreateUserAccountInput): CreateUserAccountOutput {
         log.info("Creating user with {}", input)
         validate(input.email)
-        val userToCreate = User.builder()
-            .givenName(input.givenName)
-            .familyName(input.familyName)
-            .email(input.email)
-            .build()
+        val userToCreate =
+            User
+                .builder()
+                .givenName(input.givenName)
+                .familyName(input.familyName)
+                .email(input.email)
+                .build()
         val userCreated = userRepository.save(userToCreate)
         log.info("User with {} created successfully", userCreated)
         return CreateUserAccountOutput(userCreated.id().value())
@@ -36,5 +45,4 @@ class DefaultCreateUserAccountUseCase(private val userRepository: UserRepository
             throw ResourceAlreadyCreatedException.with("Failed to process request. Please, try again later")
         }
     }
-
 }

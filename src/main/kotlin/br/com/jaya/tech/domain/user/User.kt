@@ -6,26 +6,23 @@ import br.com.jaya.tech.domain.common.utils.IdUtils
 import br.com.jaya.tech.domain.user.vo.Email
 import br.com.jaya.tech.domain.user.vo.Name
 
-data class UserId(private val value: String) : Identifier<String> {
-
+data class UserId(
+    private val value: String,
+) : Identifier<String> {
     companion object {
-        fun create(): UserId {
-            return UserId(IdUtils.generate())
-        }
+        fun create(): UserId = UserId(IdUtils.generate())
 
-        fun create(id: String): UserId {
-            return UserId(id)
-        }
+        fun create(id: String): UserId = UserId(id)
     }
 
-    override fun value(): String {
-        return this.value
-    }
-
+    override fun value(): String = this.value
 }
 
-class User private constructor(private val id: UserId, name: Name, email: Email) : Entity<UserId> {
-
+class User private constructor(
+    private val id: UserId,
+    name: Name,
+    email: Email,
+) : Entity<UserId> {
     var name: Name = name
         private set
 
@@ -36,30 +33,31 @@ class User private constructor(private val id: UserId, name: Name, email: Email)
         this.email = Email.of(email)
     }
 
-    fun updateName(givenName: String, familyName: String) {
+    fun updateName(
+        givenName: String,
+        familyName: String,
+    ) {
         this.name = Name.of(givenName, familyName)
     }
 
-    fun getFormattedName(): String {
-        return "${this.name.givenName} ${this.name.familyName}"
-    }
+    fun getFormattedName(): String = "${this.name.givenName} ${this.name.familyName}"
 
     companion object {
-        fun builder(): Builder {
-            return Builder()
-        }
+        fun builder(): Builder = Builder()
     }
 
     class Builder {
-
         private var id: String? = null
         private var givenName: String? = null
         private var familyName: String? = null
         private var email: String? = null
 
         fun id(id: String) = apply { this.id = id }
+
         fun givenName(givenName: String) = apply { this.givenName = givenName }
+
         fun familyName(familyName: String) = apply { this.familyName = familyName }
+
         fun email(email: String) = apply { this.email = email }
 
         fun build(): User {
@@ -68,15 +66,9 @@ class User private constructor(private val id: UserId, name: Name, email: Email)
             val email = Email.of(this.email)
             return User(id, name, email)
         }
-
     }
 
-    override fun id(): UserId {
-        return this.id
-    }
+    override fun id(): UserId = this.id
 
-    override fun toString(): String {
-        return "User(id=$id, name=$name, email=$email)"
-    }
-
+    override fun toString(): String = "User(id=$id, name=$name, email=$email)"
 }

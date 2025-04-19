@@ -10,9 +10,8 @@ import org.springframework.transaction.annotation.Transactional
 
 @Component
 class DefaultUserRepository(
-    private val repository: UserJpaRepository
+    private val repository: UserJpaRepository,
 ) : UserRepository {
-
     @Transactional
     override fun save(user: User): User = repository.save(UserMapper.toEntity(user)).let(UserMapper::toDomain)
 
@@ -21,5 +20,4 @@ class DefaultUserRepository(
     override fun findById(id: String): User? = repository.findByIdOrNull(id)?.let(UserMapper::toDomain)
 
     override fun existsById(id: String): Boolean = repository.existsById(id)
-
 }

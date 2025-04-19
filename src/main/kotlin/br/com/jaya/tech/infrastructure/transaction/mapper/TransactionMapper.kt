@@ -12,9 +12,9 @@ import br.com.jaya.tech.infrastructure.transaction.persistence.TransactionEntity
 import org.springframework.data.domain.Page
 
 object TransactionMapper {
-
-    fun toEntity(transaction: Transaction): TransactionEntity {
-        return TransactionEntity.builder()
+    fun toEntity(transaction: Transaction): TransactionEntity =
+        TransactionEntity
+            .builder()
             .id(transaction.id().value())
             .userId(transaction.userId)
             .originCurrency(transaction.originMoney.currency.name)
@@ -23,10 +23,10 @@ object TransactionMapper {
             .conversionRate(transaction.conversionRate)
             .createdAt(transaction.createdAt)
             .build()
-    }
 
-    fun toDomain(transaction: TransactionEntity): Transaction {
-        return Transaction.builder()
+    fun toDomain(transaction: TransactionEntity): Transaction =
+        Transaction
+            .builder()
             .id(transaction.id)
             .userId(transaction.user.id)
             .originCurrency(transaction.originCurrency)
@@ -35,30 +35,27 @@ object TransactionMapper {
             .conversionRate(transaction.conversionRate)
             .createdAt(transaction.createdAt)
             .build()
-    }
 
-    fun toPage(page: Page<TransactionEntity>): PageDTO<Transaction> {
-        return PageDTO(
+    fun toPage(page: Page<TransactionEntity>): PageDTO<Transaction> =
+        PageDTO(
             page.number,
             page.size,
             page.numberOfElements,
             page.totalPages,
             page.totalElements.toInt(),
-            page.content.map { toDomain(it) }
+            page.content.map { toDomain(it) },
         )
-    }
 
-    fun toInput(request: CreateCurrencyConversionRequest): CreateCurrencyConversionInput {
-        return CreateCurrencyConversionInput(
+    fun toInput(request: CreateCurrencyConversionRequest): CreateCurrencyConversionInput =
+        CreateCurrencyConversionInput(
             request.userId,
             request.originAmount,
             request.originCurrency,
-            request.destinationCurrency
+            request.destinationCurrency,
         )
-    }
 
-    fun toResponse(output: CreateCurrencyConversionOutput): CurrencyConversionResponse {
-        return CurrencyConversionResponse(
+    fun toResponse(output: CreateCurrencyConversionOutput): CurrencyConversionResponse =
+        CurrencyConversionResponse(
             output.id,
             output.userId,
             output.originCurrency,
@@ -68,23 +65,21 @@ object TransactionMapper {
             output.destinationAmount,
             output.destinationAmountFormatted,
             output.conversionRate,
-            output.createdAt
+            output.createdAt,
         )
-    }
 
-    fun toResponse(page: PageDTO<CurrencyConversionsOutput>): PageResponseDTO<CurrencyConversionResponse> {
-        return PageResponseDTO(
+    fun toResponse(page: PageDTO<CurrencyConversionsOutput>): PageResponseDTO<CurrencyConversionResponse> =
+        PageResponseDTO(
             page.pageNumber,
             page.pageSize,
             page.numberOfElements,
             page.totalPages,
             page.totalElements,
-            page.items.map { toResponse(it) }
+            page.items.map { toResponse(it) },
         )
-    }
 
-    private fun toResponse(output: CurrencyConversionsOutput): CurrencyConversionResponse {
-        return CurrencyConversionResponse(
+    private fun toResponse(output: CurrencyConversionsOutput): CurrencyConversionResponse =
+        CurrencyConversionResponse(
             output.id,
             output.userId,
             output.originCurrency,
@@ -94,8 +89,6 @@ object TransactionMapper {
             output.destinationAmount,
             output.destinationAmountFormatted,
             output.conversionRate,
-            output.createdAt
+            output.createdAt,
         )
-    }
-
 }

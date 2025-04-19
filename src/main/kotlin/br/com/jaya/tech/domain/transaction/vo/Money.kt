@@ -7,23 +7,27 @@ import java.math.BigDecimal
 import java.math.RoundingMode
 import java.text.NumberFormat
 
-data class Money(val amount: BigDecimal, val currency: CurrencyType) : ValueObject() {
-
+data class Money(
+    val amount: BigDecimal,
+    val currency: CurrencyType,
+) : ValueObject() {
     companion object {
-
         private const val NON_BREAKING_SPACE_CHAR = " "
 
-        fun of(amount: BigDecimal, currency: CurrencyType, scale: Int, roundingMode: RoundingMode): Money {
-            AssertThrows.isTrue(amount > BigDecimal.ZERO)
-            { DomainException.with("'amount' should be greater than zero") }
+        fun of(
+            amount: BigDecimal,
+            currency: CurrencyType,
+            scale: Int,
+            roundingMode: RoundingMode,
+        ): Money {
+            AssertThrows.isTrue(amount > BigDecimal.ZERO) { DomainException.with("'amount' should be greater than zero") }
             return Money(amount.setScale(scale, roundingMode), currency)
         }
-
     }
 
-    fun formattedAmount(): String {
-        return NumberFormat.getCurrencyInstance(currency.locale())
-            .format(this.amount).replace(NON_BREAKING_SPACE_CHAR, " ")
-    }
-
+    fun formattedAmount(): String =
+        NumberFormat
+            .getCurrencyInstance(currency.locale())
+            .format(this.amount)
+            .replace(NON_BREAKING_SPACE_CHAR, " ")
 }

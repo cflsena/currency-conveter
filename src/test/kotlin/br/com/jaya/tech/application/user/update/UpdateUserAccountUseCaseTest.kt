@@ -20,7 +20,6 @@ import kotlin.test.assertNotEquals
 
 @DisplayName("Unit Test for Update User Account Use Case")
 class UpdateUserAccountUseCaseTest : UseCaseTest() {
-
     @InjectMocks
     private lateinit var useCase: DefaultUpdateUserAccountUseCase
 
@@ -32,51 +31,63 @@ class UpdateUserAccountUseCaseTest : UseCaseTest() {
         "Daenerys; Targaryen; dan@targaryen.com",
         "Daenerys; Targaryen; test@test.com",
         "Daenerys; Targaryen;''",
-        delimiter = ';'
+        delimiter = ';',
     )
     fun givenAValidInput_whenCallExecute_shouldCreateUserAccount(
-        newGivenName: String, newFamilyName: String, newEmail: String
+        newGivenName: String,
+        newFamilyName: String,
+        newEmail: String,
     ) {
-
-        val expectedUser = User.builder().givenName("John").familyName("Snow").email("test@test.com").build()
+        val expectedUser =
+            User
+                .builder()
+                .givenName("John")
+                .familyName("Snow")
+                .email("test@test.com")
+                .build()
 
         val input = UpdateUserAccountInput(IdUtils.generate(), newGivenName, newFamilyName, newEmail)
 
         given(userRepository.findById(any<String>())).willReturn(expectedUser)
         given(userRepository.save(any())).will(AdditionalAnswers.returnsFirstArg<User>())
 
-        Assertions.assertDoesNotThrow{ useCase.execute(input) }
+        Assertions.assertDoesNotThrow { useCase.execute(input) }
 
-        verify(userRepository, times(1)).save(argThat { user ->
-            newGivenName == user.name.givenName &&
-            newFamilyName == user.name.familyName &&
-            (newEmail.isBlank() || newEmail == user.email.value)
-        })
-
+        verify(userRepository, times(1)).save(
+            argThat { user ->
+                newGivenName == user.name.givenName &&
+                    newFamilyName == user.name.familyName &&
+                    (newEmail.isBlank() || newEmail == user.email.value)
+            },
+        )
     }
 
     @Test
     fun givenAnUserNotRegistered_whenCallExecute_shouldThrowsAnException() {
-
         val expectedErrorMessage = "Failed to process request. Please, try again later"
 
         val input = UpdateUserAccountInput(IdUtils.generate(), "John", "Snow", "test@test.com")
 
         given(userRepository.findById(any<String>())).willReturn(null)
 
-        val exception = Assertions.assertThrows(
-            NotFoundException::class.java
-        ) { useCase.execute(input) }
+        val exception =
+            Assertions.assertThrows(
+                NotFoundException::class.java,
+            ) { useCase.execute(input) }
 
         assertEquals(expectedErrorMessage, exception.message)
-
     }
 
     @Test
     fun givenAnUserAlreadyCreated_whenCallExecute_shouldThrowsAnException() {
-
         val expectedErrorMessage = "Failed to process request. Please, try again later"
-        val expectedUser = User.builder().givenName("John").familyName("Snow").email("test@test.com").build()
+        val expectedUser =
+            User
+                .builder()
+                .givenName("John")
+                .familyName("Snow")
+                .email("test@test.com")
+                .build()
 
         val input = UpdateUserAccountInput(IdUtils.generate(), "Daenerys", "Targaryen", "test2@test.com")
 
@@ -85,12 +96,11 @@ class UpdateUserAccountUseCaseTest : UseCaseTest() {
         given(userRepository.findById(any<String>())).willReturn(expectedUser)
         given(userRepository.existsByEmail(any<String>())).willReturn(true)
 
-        val exception = Assertions.assertThrows(
-            ResourceAlreadyCreatedException::class.java
-        ) { useCase.execute(input) }
+        val exception =
+            Assertions.assertThrows(
+                ResourceAlreadyCreatedException::class.java,
+            ) { useCase.execute(input) }
 
         assertEquals(expectedErrorMessage, exception.message)
-
     }
-
 }

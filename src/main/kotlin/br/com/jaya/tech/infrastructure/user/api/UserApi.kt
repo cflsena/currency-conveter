@@ -13,13 +13,13 @@ import org.springframework.web.bind.annotation.RequestMapping
 @RequestMapping("api/v1/jaya-tech/users")
 @Tag(name = "User", description = "API to manage users")
 fun interface UserApi : ApiBaseDocumentation {
-
     @ApiResponse(responseCode = "201", description = "Created successfully")
     @Operation(summary = "Endpoint to create user account")
     @PostMapping(
         consumes = [MediaType.APPLICATION_JSON_VALUE],
-        produces = [MediaType.APPLICATION_JSON_VALUE]
+        produces = [MediaType.APPLICATION_JSON_VALUE],
     )
-    fun createUserAccount(@RequestBody request: CreateUserAccountRequest): ResponseEntity<UserAccountResponse>
-
+    fun createUserAccount(
+        @RequestBody request: CreateUserAccountRequest,
+    ): ResponseEntity<UserAccountResponse>
 }

@@ -8,5 +8,4 @@ import org.springframework.test.context.ActiveProfiles
 @PostgresContainerTest
 @ActiveProfiles("test")
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-class DatabaseSupportIT {
-}
+class DatabaseSupportIT
