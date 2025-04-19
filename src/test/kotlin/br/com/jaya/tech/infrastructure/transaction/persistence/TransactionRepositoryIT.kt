@@ -16,6 +16,7 @@ import org.springframework.context.annotation.Import
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.test.context.jdbc.Sql
 import java.math.BigDecimal
+import java.util.*
 
 @Import(DefaultTransactionRepository::class)
 @DisplayName("Integration test for Transaction Repository")
@@ -48,11 +49,14 @@ class TransactionRepositoryIT : DatabaseSupportIT() {
         val transactionCreated = transactionRepository.save(transactionToSave)
         assertNotNull(transactionCreated)
 
-        val transactionFound = transactionJpaRepository.findByIdOrNull(transactionToSave.id().value())
+        val transactionFound =
+            transactionJpaRepository.findByIdOrNull(
+                UUID.fromString(transactionToSave.id().value()),
+            )
         assertNotNull(transactionFound)
 
-        assertEquals(transactionCreated.id().value(), transactionFound!!.id)
-        assertEquals(transactionCreated.userId, transactionFound.user.id)
+        assertEquals(transactionCreated.id().value(), transactionFound!!.id.toString())
+        assertEquals(transactionCreated.userId, transactionFound.user.id.toString())
         assertEquals(transactionCreated.originMoney.currency, transactionFound.originCurrency)
         assertEquals(transactionCreated.originMoney.amount, transactionFound.originAmount)
         assertEquals(transactionCreated.destinationMoney.currency, transactionFound.destinationCurrency)
@@ -82,7 +86,12 @@ class TransactionRepositoryIT : DatabaseSupportIT() {
         val expectedTotalElements = 6
         val expectedTotalPages = 2
 
-        val transactionPage = transactionRepository.findAll(registeredUserId, expectedPageNumber, expectedPageSize)
+        val transactionPage =
+            transactionRepository.findAll(
+                UUID.fromString(registeredUserId),
+                expectedPageNumber,
+                expectedPageSize,
+            )
 
         assertNotNull(transactionPage)
         assertFalse(transactionPage.items.isEmpty())

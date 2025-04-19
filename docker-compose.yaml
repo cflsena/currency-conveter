@@ -1,10 +1,8 @@
-version: "3.9"
-
 services:
 
   currency-conversion-db:
     image: postgres:14-alpine
-    container_name: Currency-Conversion-DB
+    container_name: currency-conversion-db
     hostname: currency-conversion-db
     restart: on-failure
     ports:
@@ -45,6 +43,17 @@ services:
       SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER}
       SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD}
       EXCHANGE_RATES_KEY: ${EXCHANGE_RATES_KEY}
+      REDIS_HOST: redis-main
+      REDIS_PORT: 6379
+
+  redis-main:
+    container_name: redis-main
+    hostname: redis-main
+    image: redis
+    networks:
+      - currency-conversion-network
+    ports:
+      - "6379:6379"
 
 networks:
   currency-conversion-network:

@@ -4,12 +4,13 @@ import br.com.jaya.tech.application.user.create.CreateUserAccountInput
 import br.com.jaya.tech.domain.user.User
 import br.com.jaya.tech.infrastructure.user.api.CreateUserAccountRequest
 import br.com.jaya.tech.infrastructure.user.persistence.UserEntity
+import java.util.*
 
 object UserMapper {
     fun toEntity(user: User): UserEntity =
         UserEntity
             .builder()
-            .id(user.id().value())
+            .id(UUID.fromString(user.id().value()))
             .givenName(user.name.givenName)
             .familyName(user.name.familyName)
             .email(user.email.value)
@@ -18,7 +19,7 @@ object UserMapper {
     fun toDomain(user: UserEntity): User =
         User
             .builder()
-            .id(user.id)
+            .id(user.id.toString())
             .givenName(user.givenName)
             .familyName(user.familyName)
             .email(user.email)

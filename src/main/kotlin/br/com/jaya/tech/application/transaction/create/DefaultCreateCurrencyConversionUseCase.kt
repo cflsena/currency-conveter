@@ -14,6 +14,7 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import java.math.BigDecimal
 import java.time.Instant
+import java.util.*
 
 data class CreateCurrencyConversionInput(
     val userId: String,
@@ -67,7 +68,7 @@ class DefaultCreateCurrencyConversionUseCase(
             input.destinationCurrency,
         )
 
-        AssertThrows.isTrue(userRepository.existsById(input.userId)) {
+        AssertThrows.isTrue(userRepository.existsById(UUID.fromString(input.userId))) {
             throw NotFoundException.with("Unable to perform conversion, user with id ${input.userId} not found")
         }
 

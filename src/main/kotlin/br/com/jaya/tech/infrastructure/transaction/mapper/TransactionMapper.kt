@@ -10,13 +10,14 @@ import br.com.jaya.tech.infrastructure.transaction.api.CreateCurrencyConversionR
 import br.com.jaya.tech.infrastructure.transaction.api.CurrencyConversionResponse
 import br.com.jaya.tech.infrastructure.transaction.persistence.TransactionEntity
 import org.springframework.data.domain.Page
+import java.util.*
 
 object TransactionMapper {
     fun toEntity(transaction: Transaction): TransactionEntity =
         TransactionEntity
             .builder()
-            .id(transaction.id().value())
-            .userId(transaction.userId)
+            .id(UUID.fromString(transaction.id().value()))
+            .userId(UUID.fromString(transaction.userId))
             .originCurrency(transaction.originMoney.currency.name)
             .originAmount(transaction.originMoney.amount)
             .destinationCurrency(transaction.destinationMoney.currency.name)
@@ -27,8 +28,8 @@ object TransactionMapper {
     fun toDomain(transaction: TransactionEntity): Transaction =
         Transaction
             .builder()
-            .id(transaction.id)
-            .userId(transaction.user.id)
+            .id(transaction.id.toString())
+            .userId(transaction.user.id.toString())
             .originCurrency(transaction.originCurrency)
             .originAmount(transaction.originAmount)
             .destinationCurrency(transaction.destinationCurrency)

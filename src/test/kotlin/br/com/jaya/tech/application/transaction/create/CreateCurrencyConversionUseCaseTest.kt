@@ -19,6 +19,7 @@ import org.mockito.InjectMocks
 import org.mockito.Mock
 import org.mockito.kotlin.*
 import java.math.BigDecimal
+import java.util.*
 
 @DisplayName("Unit Test for Create Currency Conversion Use Case Test")
 class CreateCurrencyConversionUseCaseTest : UseCaseTest() {
@@ -54,7 +55,7 @@ class CreateCurrencyConversionUseCaseTest : UseCaseTest() {
                 expectedDestinationCurrency,
             )
 
-        given(userRepository.existsById(any<String>())).willReturn(true)
+        given(userRepository.existsById(any<UUID>())).willReturn(true)
         given(conversionRateService.getRates()).willReturn(expectedRates)
         given(transactionRepository.save(any())).will(AdditionalAnswers.returnsFirstArg<Transaction>())
 
@@ -70,7 +71,8 @@ class CreateCurrencyConversionUseCaseTest : UseCaseTest() {
         assertEquals(expectedDestinationAmount, output.destinationAmount)
         assertEquals(expectedConversionRate, output.conversionRate)
 
-        verify(userRepository, times(1)).existsById(argThat { userId -> userId == expectedUserId })
+        verify(userRepository, times(1))
+            .existsById(argThat { userId -> userId == UUID.fromString(expectedUserId) })
 
         verify(transactionRepository, times(1)).save(
             argThat { transaction ->
@@ -101,7 +103,7 @@ class CreateCurrencyConversionUseCaseTest : UseCaseTest() {
                 expectedDestinationCurrency,
             )
 
-        given(userRepository.existsById(any<String>())).willReturn(true)
+        given(userRepository.existsById(any<UUID>())).willReturn(true)
 
         val exception =
             Assertions.assertThrows(
@@ -129,7 +131,7 @@ class CreateCurrencyConversionUseCaseTest : UseCaseTest() {
                 expectedDestinationCurrency,
             )
 
-        given(userRepository.existsById(any<String>())).willReturn(false)
+        given(userRepository.existsById(any<UUID>())).willReturn(false)
 
         val exception =
             Assertions.assertThrows(
@@ -161,7 +163,7 @@ class CreateCurrencyConversionUseCaseTest : UseCaseTest() {
                 expectedDestinationCurrency,
             )
 
-        given(userRepository.existsById(any<String>())).willReturn(true)
+        given(userRepository.existsById(any<UUID>())).willReturn(true)
         given(conversionRateService.getRates()).willReturn(expectedRates)
 
         val exception =
@@ -194,7 +196,7 @@ class CreateCurrencyConversionUseCaseTest : UseCaseTest() {
                 expectedDestinationCurrency,
             )
 
-        given(userRepository.existsById(any<String>())).willReturn(true)
+        given(userRepository.existsById(any<UUID>())).willReturn(true)
         given(conversionRateService.getRates()).willReturn(expectedRates)
 
         val exception =
