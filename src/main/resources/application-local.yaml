@@ -19,3 +19,7 @@ exchange:
     url: https://api.exchangeratesapi.io/v1/
     key: ${EXCHANGE_RATES_KEY}
     base: "EUR"
+
+redis:
+  host: localhost
+  port: 6379

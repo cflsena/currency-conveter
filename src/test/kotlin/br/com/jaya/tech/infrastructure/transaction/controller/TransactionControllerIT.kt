@@ -1,6 +1,7 @@
 package br.com.jaya.tech.infrastructure.transaction.controller
 
 import br.com.jaya.tech.domain.common.pagination.PageDTO
+import br.com.jaya.tech.infrastructure.common.cache.RedisContainerTest
 import br.com.jaya.tech.infrastructure.common.e2e.E2ESupport
 import br.com.jaya.tech.infrastructure.common.e2e.JsonTestUtils.readJsonAsString
 import br.com.jaya.tech.infrastructure.common.e2e.MockCallUtils.mockCall
@@ -12,6 +13,7 @@ import com.fasterxml.jackson.module.kotlin.readValue
 import io.restassured.RestAssured.given
 import io.restassured.http.ContentType
 import org.hamcrest.Matchers.equalTo
+import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.DisplayName
@@ -19,6 +21,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.CsvSource
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.data.redis.core.StringRedisTemplate
 import org.springframework.http.HttpMethod
 import org.springframework.http.HttpStatus
 import org.springframework.test.context.jdbc.Sql
@@ -27,15 +30,24 @@ import java.util.*
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 
+@RedisContainerTest
 @DisplayName("Integration test for Transaction Controller")
 class TransactionControllerIT : E2ESupport() {
     @Autowired
     lateinit var transactionRepository: TransactionJpaRepository
 
+    @Autowired
+    lateinit var redisTemplate: StringRedisTemplate
+
     val objectMapper: ObjectMapper = jacksonObjectMapper()
 
     companion object {
         const val BASE_PATH = "api/v1/jaya-tech/transactions"
+    }
+
+    @AfterEach
+    fun afterEach() {
+        redisTemplate.execute<Unit> { it.serverCommands().flushDb() }
     }
 
     @ParameterizedTest(name = "conversion of {1} from {0} to {3}")

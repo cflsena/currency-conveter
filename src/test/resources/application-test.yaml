@@ -38,3 +38,7 @@ exchange:
     url: http://localhost:${wiremock.server.port}/v1
     key: "123456"
     base: "EUR"
+
+redis:
+  host: localhost
+  port: ${wiremock.server.port}
