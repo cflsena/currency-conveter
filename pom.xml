@@ -354,17 +354,17 @@
                 <groupId>com.github.ozsie</groupId>
                 <artifactId>detekt-maven-plugin</artifactId>
                 <version>${detekt-maven-plugin.version}</version>
+                <configuration>
+                    <config>detekt.yml</config>
+                    <report>
+                        <report>txt:reports/detekt.txt</report>
+                        <report>xml:reports/detekt.xml</report>
+                    </report>
+                </configuration>
                 <executions>
                     <execution>
                         <phase>verify</phase>
                         <goals><goal>check</goal></goals>
-                        <configuration>
-                            <config>detekt.yml</config>
-                            <report>
-                                <report>txt:reports/detekt.txt</report>
-                                <report>xml:reports/detekt.xml</report>
-                            </report>
-                        </configuration>
                     </execution>
                 </executions>
             </plugin>

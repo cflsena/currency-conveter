@@ -3,6 +3,10 @@ build:
   excludeCorrectable: false
   weights:
 
+style:
+  WildcardImport:
+    active: false
+
 config:
   validation: true
   warningsAsErrors: false
