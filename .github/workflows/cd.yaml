@@ -8,8 +8,7 @@ jobs:
 
   build-and-push:
     runs-on: ubuntu-latest
-    environment:
-      name: 'Docker Hub'
+    environment: 'Docker Hub'
 
     steps:
 
