@@ -33,13 +33,6 @@ class User private constructor(
         this.email = Email.of(email)
     }
 
-    fun updateName(
-        givenName: String,
-        familyName: String,
-    ) {
-        this.name = Name.of(givenName, familyName)
-    }
-
     fun getFormattedName(): String = "${this.name.givenName} ${this.name.familyName}"
 
     companion object {

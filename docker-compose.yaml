@@ -1,10 +1,8 @@
-version: "3.9"
-
 services:
 
   currency-conversion-db:
     image: postgres:14-alpine
-    container_name: Currency-Conversion-DB
+    container_name: currency-conversion-db
     hostname: currency-conversion-db
     restart: on-failure
     ports:
