@@ -4,18 +4,15 @@ import br.com.jaya.tech.application.transaction.create.CreateCurrencyConversionU
 import br.com.jaya.tech.application.transaction.list.CurrencyConversionsFilterInput
 import br.com.jaya.tech.application.transaction.list.ListCurrencyConversionsUseCase
 import br.com.jaya.tech.infrastructure.common.api.pagination.PageResponseDTO
+import br.com.jaya.tech.infrastructure.common.config.CustomInstantDeserializer
 import br.com.jaya.tech.infrastructure.transaction.mapper.TransactionMapper
-import com.fasterxml.jackson.annotation.JsonFormat
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize
-import com.fasterxml.jackson.databind.annotation.JsonSerialize
-import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer
-import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer
 import io.swagger.v3.oas.annotations.media.Schema
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RestController
 import java.math.BigDecimal
-import java.time.LocalDateTime
+import java.time.Instant
 
 data class CreateCurrencyConversionRequest(
 
@@ -76,13 +73,11 @@ data class CurrencyConversionResponse(
     @Schema(description = "Used conversion rate", example = "0.1702273")
     val conversionRate: BigDecimal,
 
-    @Schema(description = "Transaction creation date", example = "0.1702273")
-    @field:JsonSerialize(using = LocalDateTimeSerializer::class)
-    @field:JsonDeserialize(using = LocalDateTimeDeserializer::class)
-    @field:JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
-    val createdAt: LocalDateTime,
+    @Schema(description = "Transaction creation date (UTC)", example = "2025-04-18T19:23:45.123Z")
+    @field:JsonDeserialize(using = CustomInstantDeserializer::class)
+    val createdAt: Instant,
 
-)
+    )
 
 @RestController
 class TransactionController(

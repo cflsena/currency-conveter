@@ -5,7 +5,7 @@ import br.com.jaya.tech.domain.transaction.Transaction
 import br.com.jaya.tech.domain.transaction.TransactionRepository
 import jakarta.inject.Named
 import java.math.BigDecimal
-import java.time.LocalDateTime
+import java.time.Instant
 
 data class CurrencyConversionsFilterInput(val userId: String, val pageNumber: Int, val pageSize: Int)
 
@@ -19,7 +19,7 @@ data class CurrencyConversionsOutput(
     val destinationAmount: BigDecimal,
     val destinationAmountFormatted: String,
     val conversionRate: BigDecimal,
-    val createdAt: LocalDateTime
+    val createdAt: Instant
 ) {
     companion object {
         fun from(page: PageDTO<Transaction>): PageDTO<CurrencyConversionsOutput> {

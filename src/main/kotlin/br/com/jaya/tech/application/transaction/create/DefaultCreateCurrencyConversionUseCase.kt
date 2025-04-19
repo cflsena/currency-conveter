@@ -13,7 +13,7 @@ import jakarta.inject.Named
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import java.math.BigDecimal
-import java.time.LocalDateTime
+import java.time.Instant
 
 data class CreateCurrencyConversionInput(
     val userId: String,
@@ -32,7 +32,7 @@ data class CreateCurrencyConversionOutput(
     val destinationAmount: BigDecimal,
     val destinationAmountFormatted: String,
     val conversionRate: BigDecimal,
-    val createdAt: LocalDateTime
+    val createdAt: Instant
 ) {
     companion object {
         fun of(transaction: Transaction): CreateCurrencyConversionOutput {

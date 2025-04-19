@@ -7,7 +7,7 @@ import br.com.jaya.tech.domain.transaction.vo.CurrencyType
 import br.com.jaya.tech.domain.transaction.vo.Money
 import java.math.BigDecimal
 import java.math.RoundingMode
-import java.time.LocalDateTime
+import java.time.Instant
 
 data class TransactionId(private val value: String) : Identifier<String> {
     companion object {
@@ -32,7 +32,7 @@ class Transaction private constructor(
     val originMoney: Money,
     val destinationMoney: Money,
     val conversionRate: BigDecimal,
-    val createdAt: LocalDateTime
+    val createdAt: Instant
 ) : Entity<TransactionId> {
 
     companion object {
@@ -52,7 +52,7 @@ class Transaction private constructor(
         private var originCurrency: CurrencyType? = null
         private var destinationCurrency: CurrencyType? = null
         private var conversionRate: BigDecimal? = null
-        private var createdAt: LocalDateTime? = null
+        private var createdAt: Instant? = null
 
         fun id(id: String) = apply { this.id = id }
         fun userId(userId: String) = apply { this.userId = userId }
@@ -60,7 +60,7 @@ class Transaction private constructor(
         fun originCurrency(originCurrency: CurrencyType) = apply { this.originCurrency = originCurrency }
         fun destinationCurrency(destinationCurrency: CurrencyType) = apply { this.destinationCurrency = destinationCurrency }
         fun conversionRate(conversionRate: BigDecimal) = apply { this.conversionRate = conversionRate }
-        fun createdAt(createdAt: LocalDateTime) = apply { this.createdAt = createdAt }
+        fun createdAt(createdAt: Instant) = apply { this.createdAt = createdAt }
 
         fun build(): Transaction {
 
@@ -75,7 +75,7 @@ class Transaction private constructor(
             val id = if (this.id == null) TransactionId.create() else TransactionId.create(this.id!!)
             val userId = this.userId!!
 
-            val createdAt = this.createdAt ?: LocalDateTime.now()
+            val createdAt = this.createdAt ?: Instant.now()
 
             val originMoney = Money.of(
                 this.originAmount!!,

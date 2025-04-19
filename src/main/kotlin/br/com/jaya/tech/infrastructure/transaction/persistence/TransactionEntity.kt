@@ -8,7 +8,7 @@ import jakarta.validation.constraints.NotNull
 import org.hibernate.annotations.JdbcTypeCode
 import org.hibernate.type.SqlTypes
 import java.math.BigDecimal
-import java.time.LocalDateTime
+import java.time.Instant
 
 @Entity
 @Table(name = "tb_transaction")
@@ -42,7 +42,7 @@ class TransactionEntity(
 
     @field:NotNull
     @Column(name = "created_at", nullable = false, updatable = false)
-    val createdAt: LocalDateTime,
+    val createdAt: Instant,
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false, updatable = false)
@@ -65,7 +65,7 @@ class TransactionEntity(
         private var originAmount: BigDecimal? = null
         private var destinationCurrency: String? = null
         private var conversionRate: BigDecimal? = null
-        private var createdAt: LocalDateTime? = null
+        private var createdAt: Instant? = null
 
         fun id(id: String) = apply { this.id = id }
         fun userId(userId: String) = apply { this.userId = userId }
@@ -73,7 +73,7 @@ class TransactionEntity(
         fun originAmount(originAmount: BigDecimal) = apply { this.originAmount = originAmount }
         fun destinationCurrency(destinationCurrency: String) = apply { this.destinationCurrency = destinationCurrency }
         fun conversionRate(conversionRate: BigDecimal) = apply { this.conversionRate = conversionRate }
-        fun createdAt(createdAt: LocalDateTime) = apply { this.createdAt = createdAt }
+        fun createdAt(createdAt: Instant) = apply { this.createdAt = createdAt }
 
         fun build(): TransactionEntity {
             return TransactionEntity(
