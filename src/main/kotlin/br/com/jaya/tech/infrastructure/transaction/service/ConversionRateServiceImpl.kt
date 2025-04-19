@@ -27,7 +27,7 @@ class CachingConversionRateService(
 ) : ConversionRateService {
     companion object {
         private const val KEY = "rates:"
-        private val TTL = Duration.ofHours(24)
+        private val TTL = Duration.ofHours(8)
     }
 
     override fun getRates(): Map<String, BigDecimal> {

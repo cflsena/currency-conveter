@@ -43,6 +43,17 @@ services:
       SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER}
       SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD}
       EXCHANGE_RATES_KEY: ${EXCHANGE_RATES_KEY}
+      REDIS_HOST: redis-main
+      REDIS_PORT: 6379
+
+  redis-main:
+    container_name: redis-main
+    hostname: redis-main
+    image: redis
+    networks:
+      - currency-conversion-network
+    ports:
+      - "6379:6379"
 
 networks:
   currency-conversion-network:
