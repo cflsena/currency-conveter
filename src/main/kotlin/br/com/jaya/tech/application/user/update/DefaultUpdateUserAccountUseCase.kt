@@ -7,6 +7,7 @@ import br.com.jaya.tech.domain.user.UserRepository
 import jakarta.inject.Named
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
+import java.util.*
 
 data class UpdateUserAccountInput(
     val id: String,
@@ -34,7 +35,7 @@ class DefaultUpdateUserAccountUseCase(
 
     private fun validateAndGetUserToUpdate(input: UpdateUserAccountInput): User {
         val userFound =
-            userRepository.findById(input.id) ?: run {
+            userRepository.findById(UUID.fromString(input.id)) ?: run {
                 log.error("User cannot be updated, id {} not found", input.id)
                 throw NotFoundException.with("Failed to process request. Please, try again later")
             }

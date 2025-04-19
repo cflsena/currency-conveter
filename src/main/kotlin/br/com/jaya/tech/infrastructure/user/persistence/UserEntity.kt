@@ -6,15 +6,15 @@ import jakarta.persistence.Id
 import jakarta.persistence.Table
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.NotNull
+import java.util.*
 
 @Entity
 @Table(name = "tb_user")
 class UserEntity(
     @Id
     @field:NotNull
-    @field:NotBlank
     @Column(name = "id", length = 36, nullable = false)
-    val id: String,
+    val id: UUID,
     @field:NotNull
     @field:NotBlank
     @Column(name = "given_name", nullable = false)
@@ -33,12 +33,12 @@ class UserEntity(
     }
 
     class Builder {
-        private var id: String? = null
+        private var id: UUID? = null
         private var givenName: String? = null
         private var familyName: String? = null
         private var email: String? = null
 
-        fun id(id: String) = apply { this.id = id }
+        fun id(id: UUID) = apply { this.id = id }
 
         fun givenName(givenName: String) = apply { this.givenName = givenName }
 

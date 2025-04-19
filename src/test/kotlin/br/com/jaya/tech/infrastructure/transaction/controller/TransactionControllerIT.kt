@@ -23,6 +23,7 @@ import org.springframework.http.HttpMethod
 import org.springframework.http.HttpStatus
 import org.springframework.test.context.jdbc.Sql
 import java.math.BigDecimal
+import java.util.*
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 
@@ -101,11 +102,20 @@ class TransactionControllerIT : E2ESupport() {
 
         val responseConverted: CurrencyConversionResponse = objectMapper.readValue(response.body().asString())
 
-        val transactionFound = transactionRepository.findById(responseConverted.id)
+        val transactionFound =
+            transactionRepository.findById(
+                UUID.fromString(responseConverted.id),
+            )
 
         assertTrue(transactionFound.isPresent)
         assertNotNull(transactionFound.get().createdAt)
-        assertEquals(expectedUserId, transactionFound.get().user.id)
+        assertEquals(
+            expectedUserId,
+            transactionFound
+                .get()
+                .user.id
+                .toString(),
+        )
         assertEquals(expectedOriginCurrency, transactionFound.get().originCurrency.name)
         assertEquals(expectedOriginAmount, transactionFound.get().originAmount)
         assertEquals(expectedDestinationCurrency, transactionFound.get().destinationCurrency.name)

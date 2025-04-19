@@ -18,6 +18,7 @@ import org.junit.jupiter.params.provider.CsvSource
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.test.context.jdbc.Sql
+import java.util.*
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 
@@ -62,7 +63,10 @@ class UserControllerIT : E2ESupport() {
         assertNotNull(response)
 
         val responseConverted: UserAccountResponse = objectMapper.readValue(response.body().asString())
-        val userFound = userRepository.findById(responseConverted.id)
+        val userFound =
+            userRepository.findById(
+                UUID.fromString(responseConverted.id),
+            )
 
         assertTrue(userFound.isPresent)
         assertEquals(expectedGivenName, userFound.get().givenName)

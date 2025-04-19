@@ -7,6 +7,7 @@ import br.com.jaya.tech.infrastructure.user.persistence.jpa.UserJpaRepository
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
+import java.util.*
 
 @Component
 class DefaultUserRepository(
@@ -17,7 +18,7 @@ class DefaultUserRepository(
 
     override fun existsByEmail(email: String): Boolean = repository.existsByEmail(email)
 
-    override fun findById(id: String): User? = repository.findByIdOrNull(id)?.let(UserMapper::toDomain)
+    override fun findById(id: UUID): User? = repository.findByIdOrNull(id)?.let(UserMapper::toDomain)
 
-    override fun existsById(id: String): Boolean = repository.existsById(id)
+    override fun existsById(id: UUID): Boolean = repository.existsById(id)
 }

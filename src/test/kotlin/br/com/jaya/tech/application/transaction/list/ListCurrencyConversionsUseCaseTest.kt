@@ -13,6 +13,7 @@ import org.mockito.InjectMocks
 import org.mockito.Mock
 import org.mockito.kotlin.*
 import java.math.BigDecimal
+import java.util.*
 
 @DisplayName("Unit Test for List Currency Conversions Use Case Test")
 class ListCurrencyConversionsUseCaseTest : UseCaseTest() {
@@ -62,12 +63,12 @@ class ListCurrencyConversionsUseCaseTest : UseCaseTest() {
 
         val input = CurrencyConversionsFilterInput(expectedUserId, expectedPageNumber, expectedPageSize)
 
-        given(transactionRepository.findAll(any<String>(), any<Int>(), any<Int>())).willReturn(expectedTransactionPage)
+        given(transactionRepository.findAll(any<UUID>(), any<Int>(), any<Int>())).willReturn(expectedTransactionPage)
 
         val output = useCase.execute(input)
 
         verify(transactionRepository, times(1)).findAll(
-            argThat { userId -> userId == input.userId },
+            argThat { userId -> userId == UUID.fromString(input.userId) },
             argThat { pageNumber -> pageNumber == input.pageNumber },
             argThat { pageSize -> pageSize == input.pageSize },
         )
@@ -105,12 +106,12 @@ class ListCurrencyConversionsUseCaseTest : UseCaseTest() {
 
         val input = CurrencyConversionsFilterInput(expectedUserId, expectedPageNumber, expectedPageSize)
 
-        given(transactionRepository.findAll(any<String>(), any<Int>(), any<Int>())).willReturn(expectedTransactionPage)
+        given(transactionRepository.findAll(any<UUID>(), any<Int>(), any<Int>())).willReturn(expectedTransactionPage)
 
         val output = useCase.execute(input)
 
         verify(transactionRepository, times(1)).findAll(
-            argThat { userId -> userId == input.userId },
+            argThat { userId -> userId == UUID.fromString(input.userId) },
             argThat { pageNumber -> pageNumber == input.pageNumber },
             argThat { pageSize -> pageSize == input.pageSize },
         )

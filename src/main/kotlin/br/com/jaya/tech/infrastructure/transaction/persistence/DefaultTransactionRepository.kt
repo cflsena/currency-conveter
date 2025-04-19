@@ -7,6 +7,7 @@ import br.com.jaya.tech.infrastructure.transaction.mapper.TransactionMapper
 import br.com.jaya.tech.infrastructure.transaction.persistence.jpa.TransactionJpaRepository
 import org.springframework.data.domain.PageRequest
 import org.springframework.stereotype.Component
+import java.util.*
 
 @Component
 class DefaultTransactionRepository(
@@ -16,11 +17,11 @@ class DefaultTransactionRepository(
         repository.save(TransactionMapper.toEntity(transaction)).let(TransactionMapper::toDomain)
 
     override fun findAll(
-        userId: String,
+        userId: UUID,
         pageNumber: Int,
         pageSize: Int,
     ): PageDTO<Transaction> {
-        val transactionPage = repository.findAllByUserId(userId, PageRequest.of(pageNumber, pageSize))
+        val transactionPage = repository.findAllByUserIdOrderByCreatedAtAsc(userId, PageRequest.of(pageNumber, pageSize))
         return TransactionMapper.toPage(transactionPage)
     }
 }

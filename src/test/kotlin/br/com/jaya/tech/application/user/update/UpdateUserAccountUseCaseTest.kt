@@ -16,6 +16,7 @@ import org.mockito.AdditionalAnswers
 import org.mockito.InjectMocks
 import org.mockito.Mock
 import org.mockito.kotlin.*
+import java.util.*
 import kotlin.test.assertNotEquals
 
 @DisplayName("Unit Test for Update User Account Use Case")
@@ -48,7 +49,7 @@ class UpdateUserAccountUseCaseTest : UseCaseTest() {
 
         val input = UpdateUserAccountInput(IdUtils.generate(), newGivenName, newFamilyName, newEmail)
 
-        given(userRepository.findById(any<String>())).willReturn(expectedUser)
+        given(userRepository.findById(any<UUID>())).willReturn(expectedUser)
         given(userRepository.save(any())).will(AdditionalAnswers.returnsFirstArg<User>())
 
         Assertions.assertDoesNotThrow { useCase.execute(input) }
@@ -68,7 +69,7 @@ class UpdateUserAccountUseCaseTest : UseCaseTest() {
 
         val input = UpdateUserAccountInput(IdUtils.generate(), "John", "Snow", "test@test.com")
 
-        given(userRepository.findById(any<String>())).willReturn(null)
+        given(userRepository.findById(any<UUID>())).willReturn(null)
 
         val exception =
             Assertions.assertThrows(
@@ -93,7 +94,7 @@ class UpdateUserAccountUseCaseTest : UseCaseTest() {
 
         assertNotEquals(expectedUser.id().value(), input.id)
 
-        given(userRepository.findById(any<String>())).willReturn(expectedUser)
+        given(userRepository.findById(any<UUID>())).willReturn(expectedUser)
         given(userRepository.existsByEmail(any<String>())).willReturn(true)
 
         val exception =

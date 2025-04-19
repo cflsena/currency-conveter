@@ -13,6 +13,7 @@ import org.junit.jupiter.params.provider.CsvSource
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Import
 import org.springframework.test.context.jdbc.Sql
+import java.util.*
 
 @Import(DefaultUserRepository::class)
 @DisplayName("Integration test for User Repository")
@@ -39,7 +40,7 @@ class UserRepositoryIT : DatabaseSupportIT() {
 
         assertNotNull(userCreated)
 
-        val userFound = userRepository.findById(userCreated.id().value())
+        val userFound = userRepository.findById(UUID.fromString(userCreated.id().value()))
 
         assertNotNull(userFound)
         assertEquals(userCreated.id(), userFound!!.id())
@@ -51,7 +52,7 @@ class UserRepositoryIT : DatabaseSupportIT() {
     @Test
     @Sql("classpath:/sql/clear-db.sql")
     fun givenANotRegisteredUserId_whenCallFindById_shouldReturnNull() {
-        val expectedUserId = "85fc5f36-fe55-4d77-816d-8f6edfd395d5"
+        val expectedUserId = UUID.fromString("85fc5f36-fe55-4d77-816d-8f6edfd395d5")
         assertNull(userRepository.findById(expectedUserId))
     }
 
@@ -83,7 +84,7 @@ class UserRepositoryIT : DatabaseSupportIT() {
 
         val result =
             when (method) {
-                "existsById" -> userRepository.existsById(id)
+                "existsById" -> userRepository.existsById(UUID.fromString(id))
                 "existsByEmail" -> userRepository.existsByEmail(email)
                 else -> error("Unknown method $method")
             }

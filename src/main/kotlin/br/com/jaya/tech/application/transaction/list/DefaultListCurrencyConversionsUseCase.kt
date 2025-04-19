@@ -6,6 +6,7 @@ import br.com.jaya.tech.domain.transaction.TransactionRepository
 import jakarta.inject.Named
 import java.math.BigDecimal
 import java.time.Instant
+import java.util.*
 
 data class CurrencyConversionsFilterInput(
     val userId: String,
@@ -57,7 +58,7 @@ class DefaultListCurrencyConversionsUseCase(
     private val transactionRepository: TransactionRepository,
 ) : ListCurrencyConversionsUseCase {
     override fun execute(input: CurrencyConversionsFilterInput): PageDTO<CurrencyConversionsOutput> {
-        val transactionPage = transactionRepository.findAll(input.userId, input.pageNumber, input.pageSize)
+        val transactionPage = transactionRepository.findAll(UUID.fromString(input.userId), input.pageNumber, input.pageSize)
         return CurrencyConversionsOutput.from(transactionPage)
     }
 }
