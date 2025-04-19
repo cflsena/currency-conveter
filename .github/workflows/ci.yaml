@@ -1,7 +1,8 @@
 name: CI Pipeline
 
 on:
-  push:
+  pull_request:
+    types: [ opened, synchronize, reopened ]
     branches:
       - 'feature/**'
       - 'feat/**'
@@ -29,7 +30,7 @@ jobs:
 
       - name: Archive test results
         if: always()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: test-results
           path: target/surefire-reports/**/*.xml
