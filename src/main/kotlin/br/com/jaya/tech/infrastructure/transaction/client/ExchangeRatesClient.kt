@@ -26,7 +26,7 @@ class AuthenticationConfig {
     @Value("\${exchange.rates.key}")
     lateinit var accessKey: String
 
-    @Value("\${exchange.rates.base-currency}")
+    @Value("\${exchange.rates.base}")
     lateinit var baseCurrency: String
 
     @Bean

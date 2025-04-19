@@ -37,4 +37,4 @@ exchange:
   rates:
     url: http://localhost:${wiremock.server.port}/v1
     key: "123456"
-    base-currency: "EUR"
+    base: "EUR"
