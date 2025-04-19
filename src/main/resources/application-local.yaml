@@ -9,7 +9,7 @@ spring:
     jpa:
       show-sql: true
     liquibase:
-      contexts: develop
+      contexts: local
 
 springdoc:
   host: http://localhost:${server.port}/
@@ -18,4 +18,4 @@ exchange:
   rates:
     url: https://api.exchangeratesapi.io/v1/
     key: ${EXCHANGE_RATES_KEY}
-    base-currency: "EUR"
+    base: "EUR"

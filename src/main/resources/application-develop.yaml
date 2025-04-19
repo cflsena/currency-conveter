@@ -1,0 +1,13 @@
+spring:
+  config:
+    activate:
+      on-profile: develop
+    jpa:
+      show-sql: false
+    liquibase:
+      contexts: develop
+
+exchange:
+  rates:
+    url: https://api.exchangeratesapi.io/v1/
+    base: "EUR"
