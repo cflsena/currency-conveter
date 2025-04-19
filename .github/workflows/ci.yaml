@@ -8,11 +8,17 @@ on:
   workflow_dispatch:
 
 jobs:
-  tests:
+
+  lint-and-test:
     name: Run application tests
+    if: |
+      startsWith(github.head_ref, 'feat/') ||
+      startsWith(github.head_ref, 'feature/') ||
+      startsWith(github.head_ref, 'bugfix/')
     runs-on: ubuntu-latest
 
     steps:
+
       - name: Code checkout
         uses: actions/checkout@v4
 
@@ -22,6 +28,12 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
           cache: 'maven'
+
+      - name: KtLint check
+        run: mvn ktlint:check -B
+
+      - name: Detekt analysis
+        run: mvn detekt:check -B
 
       - name: Run tests
         run: mvn test -B
