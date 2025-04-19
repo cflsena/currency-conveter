@@ -1,0 +1,25 @@
+spring:
+  config:
+    activate:
+      on-profile: local
+  datasource:
+    url: jdbc:postgresql://localhost:15432/${POSTGRES_DB}?currentSchema=CURRENCY_CONVERSION
+    username: ${POSTGRES_USER}
+    password: ${POSTGRES_PASSWORD}
+    jpa:
+      show-sql: true
+    liquibase:
+      contexts: local
+
+springdoc:
+  host: http://localhost:${server.port}/
+
+exchange:
+  rates:
+    url: https://api.exchangeratesapi.io/v1/
+    key: ${EXCHANGE_RATES_KEY}
+    base: "EUR"
+
+redis:
+  host: localhost
+  port: 6379

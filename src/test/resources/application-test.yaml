@@ -1,0 +1,44 @@
+spring:
+  main:
+    lazy-initialization: true
+  config:
+    activate:
+      on-profile: test
+  application:
+    name: currency-converter
+  datasource:
+    driver-class-name: org.postgresql.Driver
+  liquibase:
+    contexts: test
+    enabled: true
+    change-log: classpath:db/changelog/master.xml
+    default_schema: "CURRENCY_CONVERSION"
+  jpa:
+    show-sql: true
+    hibernate:
+      use-new-id-generator-mappings: false
+      ddl-auto: validate
+    open-in-view: false
+
+feign:
+  client:
+    config:
+      default:
+        loggerLevel: full
+
+logging:
+  level:
+    root: INFO
+
+springdoc:
+  host: http://localhost:${wiremock.server.port}/
+
+exchange:
+  rates:
+    url: http://localhost:${wiremock.server.port}/v1
+    key: "123456"
+    base: "EUR"
+
+redis:
+  host: localhost
+  port: ${wiremock.server.port}

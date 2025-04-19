@@ -1,0 +1,64 @@
+services:
+
+  currency-conversion-db:
+    image: postgres:14-alpine
+    container_name: currency-conversion-db
+    hostname: currency-conversion-db
+    restart: on-failure
+    ports:
+      - "15432:5432"
+    networks:
+      - currency-conversion-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    volumes:
+      - currency-conversion-data:/var/lib/postgresql/data:rw
+      - ./docker/database/schema:/docker-entrypoint-initdb.d
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+
+  currency-conversion-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: currency-converter-app:latest
+    container_name: currency-converter-app
+    hostname: currency-conversion-app
+    restart: on-failure
+    ports:
+      - "8080:8080"
+    networks:
+      - currency-conversion-network
+    depends_on:
+      currency-conversion-db:
+        condition: service_healthy
+    environment:
+      SPRING_PROFILES_ACTIVE: ${PROFILES}
+      SPRING_DATASOURCE_URL: jdbc:postgresql://currency-conversion-db:5432/${POSTGRES_DB}
+      SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER}
+      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD}
+      EXCHANGE_RATES_KEY: ${EXCHANGE_RATES_KEY}
+      REDIS_HOST: redis-main
+      REDIS_PORT: 6379
+
+  redis-main:
+    container_name: redis-main
+    hostname: redis-main
+    image: redis
+    networks:
+      - currency-conversion-network
+    ports:
+      - "6379:6379"
+
+networks:
+  currency-conversion-network:
+    name: currency-conversion-network
+    driver: bridge
+
+volumes:
+  currency-conversion-data:
