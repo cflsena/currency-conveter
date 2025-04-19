@@ -17,5 +17,5 @@ springdoc:
 exchange:
   rates:
     url: https://api.exchangeratesapi.io/v1/
-    access-key: ${EXCHANGE_RATES_ACCESS-KEY}
+    key: ${EXCHANGE_RATES_KEY}
     base-currency: "EUR"

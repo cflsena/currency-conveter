@@ -23,7 +23,7 @@ fun interface ExchangeRatesClient {
 
 class AuthenticationConfig {
 
-    @Value("\${exchange.rates.access-key}")
+    @Value("\${exchange.rates.key}")
     lateinit var accessKey: String
 
     @Value("\${exchange.rates.base-currency}")
