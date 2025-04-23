@@ -36,6 +36,8 @@
         <mockito-kotlin.version>5.4.0</mockito-kotlin.version>
         <test-container.version>1.20.6</test-container.version>
 
+        <hibernate-core.version>6.5.2.Final</hibernate-core.version>
+
     </properties>
 
     <dependencies>
@@ -77,6 +79,12 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.hibernate</groupId>
+                    <artifactId>hibernate-core</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <dependency>
@@ -113,6 +121,12 @@
         <dependency>
             <groupId>org.liquibase</groupId>
             <artifactId>liquibase-core</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.hibernate.orm</groupId>
+            <artifactId>hibernate-core</artifactId>
+            <version>${hibernate-core.version}</version>
         </dependency>
 
         <!-- Kotlin -->
